@@ -1,0 +1,904 @@
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+        <title>tenth vibe · class 10 CBSE 2025-26</title>
+        <!-- supabase js -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <!-- google font -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+        <!-- font awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Inter', sans-serif;
+            }
+
+            body {
+                min-height: 100vh;
+                background: linear-gradient(145deg, #f9f2e7 0%, #ffe9f4 45%, #e2f0ff 100%);
+                background-attachment: fixed;
+                position: relative;
+                overflow-x: hidden;
+            }
+
+            /* floating blobs (same as login) */
+            .blob {
+                position: fixed;
+                width: 300px;
+                height: 300px;
+                background: rgba(255, 215, 235, 0.35);
+                border-radius: 70% 30% 60% 40% / 50% 40% 60% 50%;
+                filter: blur(45px);
+                z-index: 0;
+                animation: floatBlob 20s infinite alternate ease-in-out;
+                pointer-events: none;
+            }
+
+            .blob1 {
+                top: -80px;
+                left: -50px;
+                background: rgba(255, 200, 210, 0.45);
+            }
+
+            .blob2 {
+                bottom: -100px;
+                right: -30px;
+                width: 400px;
+                height: 400px;
+                background: rgba(190, 230, 255, 0.5);
+                animation-duration: 28s;
+            }
+
+            .blob3 {
+                top: 40%;
+                left: 70%;
+                width: 250px;
+                height: 250px;
+                background: rgba(220, 245, 210, 0.5);
+                animation-duration: 18s;
+            }
+
+            @keyframes floatBlob {
+                0% {
+                    transform: translate(0, 0) rotate(0deg) scale(1);
+                }
+
+                100% {
+                    transform: translate(40px, -30px) rotate(8deg) scale(1.1);
+                }
+            }
+
+            /* main layout */
+            .app-container {
+                position: relative;
+                z-index: 10;
+                display: flex;
+                min-height: 100vh;
+                backdrop-filter: blur(2px);
+            }
+
+            /* sidebar */
+            .sidebar {
+                width: 280px;
+                background: rgba(255, 255, 255, 0.5);
+                backdrop-filter: blur(16px) saturate(180%);
+                -webkit-backdrop-filter: blur(16px);
+                border-right: 1px solid rgba(255, 255, 255, 0.8);
+                padding: 2rem 1rem;
+                transition: all 0.3s ease;
+                box-shadow: 4px 0 30px -10px rgba(90, 60, 100, 0.15);
+                height: 100vh;
+                position: sticky;
+                top: 0;
+                overflow-y: auto;
+            }
+
+            .sidebar-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 2.5rem;
+                padding: 0 0.5rem;
+            }
+
+            .sidebar-header i {
+                font-size: 2rem;
+                color: #4b3b5c;
+                background: rgba(255, 255, 255, 0.7);
+                padding: 10px;
+                border-radius: 18px;
+                box-shadow: 0 8px 20px -8px rgba(75, 59, 92, 0.3);
+            }
+
+            .sidebar-header h2 {
+                font-size: 1.4rem;
+                font-weight: 700;
+                background: linear-gradient(130deg, #1d1b31, #4b3b5c);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+
+            .nav-menu {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 1rem 1.2rem;
+                border-radius: 60px;
+                color: #3a2e4a;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                background: rgba(255, 255, 255, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.6);
+            }
+
+            .nav-item i {
+                font-size: 1.2rem;
+                width: 24px;
+                color: #6b4e7e;
+            }
+
+            .nav-item.active {
+                background: white;
+                box-shadow: 0 8px 20px -8px rgba(165, 120, 200, 0.3);
+                border-color: rgba(255, 255, 255, 0.9);
+                color: #2b1b36;
+            }
+
+            .nav-item:hover:not(.active) {
+                background: rgba(255, 255, 255, 0.6);
+                transform: translateX(5px);
+            }
+
+            /* main content */
+            .main-content {
+                flex: 1;
+                padding: 2rem;
+                overflow-y: auto;
+                max-height: 100vh;
+                overflow-y: auto;
+            }
+
+            /* top bar */
+            .top-bar {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin-bottom: 2rem;
+                background: rgba(255, 255, 255, 0.4);
+                backdrop-filter: blur(12px);
+                padding: 0.8rem 2rem;
+                border-radius: 60px;
+                border: 1px solid rgba(255, 255, 255, 0.8);
+            }
+
+            .user-profile {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .user-avatar {
+                width: 45px;
+                height: 45px;
+                background: linear-gradient(145deg, #d9b0ee, #b384c9);
+                border-radius: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: 600;
+                font-size: 1.2rem;
+                border: 2px solid white;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+            }
+
+            .user-name {
+                font-weight: 600;
+                color: #2b1b36;
+                font-size: 1.1rem;
+            }
+
+            /* mobile menu toggle */
+            .menu-toggle {
+                display: none;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 100;
+                background: #1f1a2b;
+                color: white;
+                width: 60px;
+                height: 60px;
+                border-radius: 60px;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                border: 2px solid rgba(255, 255, 255, 0.5);
+                cursor: pointer;
+            }
+
+            /* sections */
+            .section {
+                display: none;
+                animation: fadeIn 0.4s ease;
+            }
+
+            .section.active-section {
+                display: block;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* cards */
+            .glass-card {
+                background: rgba(255, 255, 255, 0.5);
+                backdrop-filter: blur(16px) saturate(180%);
+                -webkit-backdrop-filter: blur(16px);
+                border-radius: 32px;
+                border: 1px solid rgba(255, 255, 255, 0.7);
+                box-shadow: 0 15px 35px -10px rgba(90, 60, 100, 0.15);
+                padding: 1.8rem;
+                margin-bottom: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+                font-weight: 700;
+                background: linear-gradient(130deg, #1d1b31, #4b3b5c);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            /* group photo grid */
+            .group-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 1rem;
+            }
+
+            .student-card {
+                background: rgba(255, 255, 255, 0.6);
+                border-radius: 24px;
+                padding: 1rem;
+                text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.8);
+                transition: all 0.3s;
+                position: relative;
+            }
+
+            .student-card:hover {
+                transform: translateY(-5px);
+                background: white;
+                box-shadow: 0 15px 30px -10px rgba(115, 65, 165, 0.2);
+            }
+
+            .student-avatar {
+                width: 70px;
+                height: 70px;
+                background: linear-gradient(145deg, #d9b0ee, #b384c9);
+                border-radius: 60px;
+                margin: 0 auto 0.8rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: 700;
+                font-size: 1.5rem;
+                border: 3px solid white;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+            }
+
+            .teacher-badge {
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: #ffd700;
+                color: #1f1a2b;
+                padding: 4px 12px;
+                border-radius: 40px;
+                font-size: 0.7rem;
+                font-weight: 700;
+                border: 2px solid white;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .student-name {
+                font-weight: 600;
+                color: #2b1b36;
+                margin-bottom: 0.3rem;
+            }
+
+            .student-roll {
+                font-size: 0.75rem;
+                color: #6f5b7a;
+            }
+
+            .nickname-tag {
+                font-size: 0.8rem;
+                background: rgba(210, 180, 240, 0.3);
+                padding: 4px 8px;
+                border-radius: 40px;
+                margin-top: 6px;
+                color: #4b3b5c;
+            }
+
+            /* memory cards */
+            .memories-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .memory-card {
+                background: rgba(255, 255, 255, 0.6);
+                border-radius: 28px;
+                overflow: hidden;
+                border: 1px solid rgba(255, 255, 255, 0.8);
+                transition: all 0.4s;
+                cursor: pointer;
+            }
+
+            .memory-card:hover {
+                transform: scale(1.02);
+                background: white;
+                box-shadow: 0 20px 40px -12px rgba(115, 65, 165, 0.25);
+            }
+
+            .memory-cover {
+                height: 160px;
+                background-size: cover;
+                background-position: center;
+                position: relative;
+            }
+
+            .memory-overlay {
+                position: absolute;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(2px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: 0.3s;
+                color: white;
+                font-size: 1rem;
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .memory-card:hover .memory-overlay {
+                opacity: 1;
+            }
+
+            .memory-info {
+                padding: 1.2rem;
+            }
+
+            .memory-title {
+                font-weight: 700;
+                font-size: 1.1rem;
+                color: #2b1b36;
+            }
+
+            .memory-meta {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 0.5rem;
+                font-size: 0.85rem;
+                color: #6f5b7a;
+            }
+
+            .visibility-badge {
+                background: rgba(160, 110, 200, 0.2);
+                padding: 4px 10px;
+                border-radius: 40px;
+            }
+
+            /* timeline */
+            .timeline {
+                position: relative;
+                padding-left: 2rem;
+            }
+
+            .timeline::before {
+                content: '';
+                position: absolute;
+                left: 7px;
+                top: 0;
+                bottom: 0;
+                width: 2px;
+                background: rgba(160, 110, 200, 0.3);
+            }
+
+            .timeline-item {
+                position: relative;
+                margin-bottom: 2rem;
+                background: rgba(255, 255, 255, 0.5);
+                backdrop-filter: blur(8px);
+                padding: 1.2rem;
+                border-radius: 24px;
+                border: 1px solid rgba(255, 255, 255, 0.8);
+            }
+
+            .timeline-item::before {
+                content: '';
+                position: absolute;
+                left: -2rem;
+                top: 1.5rem;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: #b384c9;
+                border: 2px solid white;
+                box-shadow: 0 0 0 2px rgba(160, 110, 200, 0.3);
+            }
+
+            .timeline-date {
+                font-size: 0.85rem;
+                color: #8566aa;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+
+            /* community post */
+            .post-card {
+                background: rgba(255, 255, 255, 0.6);
+                border-radius: 28px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                border: 1px solid rgba(255, 255, 255, 0.8);
+            }
+
+            .post-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 1rem;
+            }
+
+            .post-avatar {
+                width: 45px;
+                height: 45px;
+                background: linear-gradient(145deg, #d9b0ee, #b384c9);
+                border-radius: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: 600;
+            }
+
+            .post-author {
+                font-weight: 600;
+                color: #2b1b36;
+            }
+
+            .post-time {
+                font-size: 0.8rem;
+                color: #6f5b7a;
+            }
+
+            .post-content {
+                margin-bottom: 1rem;
+                line-height: 1.5;
+                color: #2e2438;
+            }
+
+            .post-media {
+                max-width: 100%;
+                border-radius: 20px;
+                margin-bottom: 1rem;
+            }
+
+            .post-actions {
+                display: flex;
+                gap: 1.5rem;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.6);
+            }
+
+            .post-action {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                color: #6f5b7a;
+                cursor: pointer;
+                transition: 0.2s;
+            }
+
+            .post-action:hover {
+                color: #b384c9;
+            }
+
+            /* create memory form */
+            .create-form {
+                display: grid;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+
+            .form-input {
+                padding: 1rem 1.5rem;
+                border-radius: 60px;
+                border: 1px solid rgba(255, 255, 255, 0.8);
+                background: rgba(255, 255, 255, 0.6);
+                backdrop-filter: blur(8px);
+                font-size: 1rem;
+                outline: none;
+            }
+
+            .form-input:focus {
+                border-color: #b384c9;
+                background: white;
+            }
+
+            /* responsive */
+            @media (max-width: 1024px) {
+                .sidebar {
+                    position: fixed;
+                    left: -280px;
+                    z-index: 99;
+                    transition: 0.3s;
+                }
+
+                .sidebar.open {
+                    left: 0;
+                }
+
+                .menu-toggle {
+                    display: flex;
+                }
+
+                .main-content {
+                    padding: 1rem;
+                }
+            }
+
+            @media (max-width: 640px) {
+                .group-grid {
+                    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                }
+            }
+
+            .download-btn {
+                background: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 40px;
+                color: #2b1b36;
+                font-weight: 600;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                margin-top: 1rem;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+        <div class="blob blob3"></div>
+
+        <div class="app-container">
+            <!-- sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <i class="fa-regular fa-star"></i>
+                    <h2>Class X</h2>
+                </div>
+                <div class="nav-menu">
+                    <div class="nav-item active" data-section="home-section">
+                        <i class="fa-regular fa-building"></i>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item" data-section="community-section">
+                        <i class="fa-regular fa-comments"></i>
+                        <span>Community</span>
+                    </div>
+                    <div class="nav-item" data-section="memories-section">
+                        <i class="fa-regular fa-images"></i>
+                        <span>Memories</span>
+                    </div>
+                    <div class="nav-item" data-section="timeline-section">
+                    <i class="fa-solid fa-list-ol"></i> 
+                                        <span>Timeline</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- mobile menu toggle -->
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fa-regular fa-bars"></i>
+            </div>
+
+            <!-- main content -->
+            <div class="main-content">
+                <!-- top bar with user name -->
+                <div class="top-bar" id="topBar">
+                    <div class="user-profile">
+                        <div class="user-avatar" id="userAvatar">YD</div>
+                        <span class="user-name" id="userDisplayName">YADHAV SREEKANTH</span>
+                    </div>
+                </div>
+
+                <!-- HOME SECTION - Group photo with nicknames -->
+                <div class="section active-section" id="home-section">
+                    <h1 class="section-title">
+                        <i class="fa-regular fa-user"></i> Our class · Teacher + 28  
+                    </h1>
+
+                    <div class="glass-card">
+                        <div class="group-grid" id="groupGrid">
+                            <!-- will be filled by js -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMMUNITY SECTION -->
+                <div class="section" id="community-section">
+                    <h1 class="section-title">
+                        <i class="fa-regular fa-comments"></i> Community
+                    </h1>
+
+                    <!-- create post -->
+                    <div class="glass-card">
+                        <textarea class="form-input" placeholder="Share something with class..." rows="3"
+                            style="border-radius: 24px; width: 100%;"></textarea>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                            <button class="download-btn"><i class="fa-regular fa-image"></i> Photo</button>
+                            <button class="download-btn"><i class="fas fa-video" aria-hidden="true"></i> Video</button>
+                            <button class="download-btn"><i class="fas fa-microphone" aria-hidden="true"></i>Audio</button>
+                            <button class="download-btn" style="background: #1f1a2b; color: white;">Post</button>
+                        </div>
+                    </div>
+
+                    <!-- posts feed -->
+                    <div id="postsFeed">
+                        <!-- sample post -->
+        
+                            <div class="post-actions">
+                                <span class="post-action"><i class="fa-regular fa-heart"></i> 24</span>
+                                <span class="post-action"><i class="fa-regular fa-comment"></i> 8</span>
+                                <span class="post-action"><i class="fas fa-share"></i> share</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEMORIES SECTION -->
+                <div class="section" id="memories-section">
+                    <h1 class="section-title">
+                        <i class="fa-regular fa-images"></i> Memories
+                    </h1>
+
+                    <!-- create memory button -->
+                    <button class="download-btn" id="showCreateMemory" style="margin-bottom: 1rem;">
+                        <i class="fa-regular fa-plus"></i> Create new memory
+                    </button>
+
+                    <!-- create memory form (hidden by default) -->
+                    <div class="glass-card" id="createMemoryForm" style="display: none;">
+                        <h3 style="margin-bottom: 1rem;">Create a memory album</h3>
+                        <div class="create-form">
+                            <input type="text" class="form-input" placeholder="topic (e.g., Onam celebration)">
+                            <input type="text" class="form-input" placeholder="cover image URL">
+                            <textarea class="form-input" placeholder="description" rows="3"></textarea>
+                            <select class="form-input">
+                                <option>visible to everyone (28/28)</option>
+                                <option>visible to 25 people</option>
+                                <option>visible to 20 people</option>
+                            </select>
+                            <button class="download-btn" style="background: #1f1a2b; color: white;">create memory</button>
+                        </div>
+                    </div>
+
+                    <!-- memories grid -->
+                    <div class="memories-grid" id="memoriesGrid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TIMELINE SECTION -->
+                <div class="section" id="timeline-section">
+                    <h1 class="section-title">
+                        <i class="fas fa-timeline"></i> Year timeline · 2025-26
+                    </h1>
+
+                    <button class="download-btn" style="margin-bottom: 1rem;">
+                        <i class="fa-regular fa-plus"></i> Add to timeline
+                    </button>
+
+                    <div class="timeline" id="timeline">
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function () {
+                // student roster
+                const studentRoster = [
+                    { roll: 1, name: "AADIDEV M", nickname: "" },
+                    { roll: 2, name: "AAGNA VAIGA U", nickname: "" },
+                    { roll: 3, name: "ADHAN BERNARD ANTONY", nickname: "" },
+                    { roll: 4, name: "AHMED FAHAMDHAAN", nickname: "" },
+                    { roll: 5, name: "AMEYA M P", nickname: "" },
+                    { roll: 6, name: "AVANI KRISHNA P", nickname: "" },
+                    { roll: 7, name: "AVANTHIKA ANAND", nickname: "" },
+                    { roll: 8, name: "AVANTHIKA SHINNITH", nickname: "" },
+                    { roll: 9, name: "DEVANANDA P K", nickname: "" },
+                    { roll: 10, name: "GOVARDHAN P K", nickname: "" },
+                    { roll: 11, name: "KRISHNENDU U", nickname: "" },
+                    { roll: 12, name: "MITHRA SABILASH", nickname: "" },
+                    { roll: 13, name: "NISHAN M", nickname: "" },
+                    { roll: 14, name: "PARVANA P", nickname: "" },
+                    { roll: 15, name: "PIYUSH K", nickname: "" },
+                    { roll: 16, name: "R. ADHARSH", nickname: "" },
+                    { roll: 17, name: "SANDRA P", nickname: "" },
+                    { roll: 18, name: "SHIVANI SUJESH K", nickname: "" },
+                    { roll: 19, name: "SHREYA PRAJESH", nickname: "" },
+                    { roll: 20, name: "SREEHARI V K", nickname: "" },
+                    { roll: 21, name: "SREESHUKAN T P", nickname: "" },
+                    { roll: 22, name: "THANMAYA T", nickname: "" },
+                    { roll: 23, name: "UMA PARVATHI K T", nickname: "" },
+                    { roll: 24, name: "VAMIKA M", nickname: "" },
+                    { roll: 25, name: "VINAYAK P", nickname: "" },
+                    { roll: 26, name: "VYBHAV V P", nickname: "" },
+                    { roll: 27, name: "VYGA K C", nickname: "" },
+                    { roll: 28, name: "YADHAV SREEKANTH", nickname: "" }
+                ];
+
+                // teacher
+                const classTeacher = {
+                    name: "REENA MISS",
+                    subject: "Class Teacher"
+                };
+
+                // supabase init (use same as login)
+                const SUPABASE_URL = 'https://mbijxyxodddknabhefmc.supabase.co';
+                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1iaWp4eXhvZGRka25hYmhlZm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNDI2NzgsImV4cCI6MjA4ODgxODY3OH0.crhnBb5zsAauauaNXriVallPm6yi1S8ZjSmIG56kdfw';
+                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+                function checkAuth() {
+
+                    const roll = localStorage.getItem("classUserRoll");
+                    const name = localStorage.getItem("classUserName");
+
+                    if (!roll) {
+                        window.location.href = "index.html";
+                        return;
+                    }
+
+                    // show user info
+                    document.getElementById("userDisplayName").textContent = name;
+
+                    const initials = name.split(" ").map(n => n[0]).join("").substring(0, 2);
+                    document.getElementById("userAvatar").textContent = initials;
+                }
+
+                // populate group grid
+                function populateGroupGrid() {
+                    const grid = document.getElementById('groupGrid');
+                    grid.innerHTML = '';
+
+                    // add teacher first
+                    grid.innerHTML += `
+                        <div class="student-card" style="border: 2px solid #ffd700;">
+                            <div class="teacher-badge">✨ CLASS TEACHER</div>
+                            <div class="student-avatar" style="background: linear-gradient(145deg, #ffd700, #ffa500);">👩‍🏫</div>
+                            <div class="student-name">${classTeacher.name}</div>
+                            <div class="student-roll">${classTeacher.subject}</div>
+                            <div class="nickname-tag"><i class="fa-regular fa-pen-to-square"></i> set nickname</div>
+                        </div>
+                    `;
+
+                    // add students
+                    studentRoster.forEach(s => {
+                        const initials = s.name.split(' ').map(n => n[0]).join('');
+                        grid.innerHTML += `
+                            <div class="student-card" data-roll="${s.roll}">
+                                <div class="student-avatar">${initials.substring(0, 2)}</div>
+                                <div class="student-name">${s.name}</div>
+                                <div class="student-roll">Roll - ${s.roll}</div>
+                                <div class="nickname-tag" onclick="setNickname(${s.roll})">
+                                    <i class="fa-regular fa-pen-to-square"></i> 
+                                    <span id="nickname-${s.roll}">${s.nickname || 'Add Nickname'}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // set nickname function
+                window.setNickname = function (roll) {
+                    const nickname = prompt('Enter nickname for this student:');
+                    if (nickname) {
+                        document.getElementById(`nickname-${roll}`).textContent = nickname;
+                        // would save to supabase here
+                    }
+                };
+
+                // toggle create memory form
+                document.getElementById('showCreateMemory').addEventListener('click', () => {
+                    const form = document.getElementById('createMemoryForm');
+                    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+                });
+
+                // sidebar navigation
+                const navItems = document.querySelectorAll('.nav-item');
+                const sections = document.querySelectorAll('.section');
+
+                navItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        // remove active from all nav items
+                        navItems.forEach(n => n.classList.remove('active'));
+                        item.classList.add('active');
+
+                        // hide all sections
+                        sections.forEach(s => s.classList.remove('active-section'));
+
+                        // show selected section
+                        const sectionId = item.dataset.section;
+                        document.getElementById(sectionId).classList.add('active-section');
+
+                        // close sidebar on mobile
+                        if (window.innerWidth <= 1024) {
+                            document.getElementById('sidebar').classList.remove('open');
+                        }
+                    });
+                });
+
+                // mobile menu toggle
+                document.getElementById('menuToggle').addEventListener('click', () => {
+                    document.getElementById('sidebar').classList.toggle('open');
+                });
+
+                // initialize
+                checkAuth();
+                populateGroupGrid();
+            })();
+        </script>
+
+
+    </body>
+
+    </html>

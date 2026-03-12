@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Class X - 2K25-26</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="icon" href="assets/favicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+
+    <div class="glass-card">
+        <div class="grid-container">
+            <!-- left: branding & student list preview -->
+            <div class="brand-zone">
+                <div class="chip">
+                    LITTLE DAFFODILS SCHOOL · CBSE 2025-26
+                </div>
+                <h1>CLASS 10th<br>BATCH 2026</h1>
+                <div class="student-grid-preview">
+                    <h3><i class="fa-regular fa-address-card"></i> OUR CLASS · 28 ORIGINALS</h3>
+                 
+                    <div class="small-note" style="margin-top: 1rem;">
+                        <i class="fa-regular fa-face-smirk"></i> Type roll number · Name auto-fills
+                    </div>
+                </div>
+            </div>
+
+            <!-- right: forms (login / signup) with tab switch -->
+            <div class="form-section">
+                <div class="toggle-tabs">
+                    <button class="toggle-tab active" id="loginTabBtn">LOGIN</button>
+                    <button class="toggle-tab" id="signupTabBtn">SIGN UP</button>
+                </div>
+
+                <!-- login form -->
+                <div id="loginForm">
+                    <div class="input-group">
+                        <label><i class="fa-regular fa-hashtag"></i> Roll number</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-id-card"></i>
+                            <input type="text" id="loginRoll" placeholder="Enter your roll number" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-regular fa-lock"></i> Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-key"></i>
+                            <input type="password" id="loginPassword" placeholder="••••••••">
+                        </div>
+                    </div>
+                    <button class="btn-primary" id="loginBtn"><span>Log in</span></button>
+                </div>
+
+                <!-- signup form (hidden by default) -->
+                <div id="signupForm" style="display: none;">
+                    <div class="input-group">
+                        <label><i class="fa-regular fa-hashtag"></i> Roll number</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-id-card"></i>
+                            <input type="text" id="signupRoll" placeholder="Type roll number" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-regular fa-user"></i> Your name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-face-smile"></i>
+                            <input type="text" id="signupName" placeholder="Auto-fills from roll" readonly>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-regular fa-lock"></i> Create password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-key"></i>
+                            <input type="password" id="signupPassword" placeholder="Minimum 6 characters">
+                        </div>
+                    </div>
+                    <button class="btn-primary" id="signupBtn"><span>Create account</span> </button>
+                </div>
+
+                <!-- dynamic message area -->
+                <div class="message-banner" id="statusMessage">
+                    <i class="fa-regular fa-sparkles"></i> Welcome to Class 10 · 2025-26
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // -------------------- STUDENT DATA --------------------
+            const studentRoster = [
+                { roll: 1, name: "AADIDEV M" },
+                { roll: 2, name: "AAGNA VAIGA U" },
+                { roll: 3, name: "ADHAN BERNARD ANTONY" },
+                { roll: 4, name: "AHMED FAHAMDHAAN" },
+                { roll: 5, name: "AMEYA M P" },
+                { roll: 6, name: "AVANI KRISHNA P" },
+                { roll: 7, name: "AVANTHIKA ANAND" },
+                { roll: 8, name: "AVANTHIKA SHINNITH" },
+                { roll: 9, name: "DEVANANDA P K" },
+                { roll: 10, name: "GOVARDHAN P K" },
+                { roll: 11, name: "KRISHNENDU U" },
+                { roll: 12, name: "MITHRA SABILASH" },
+                { roll: 13, name: "NISHAN M" },
+                { roll: 14, name: "PARVANA P" },
+                { roll: 15, name: "PIYUSH K" },
+                { roll: 16, name: "R. ADHARSH" },
+                { roll: 17, name: "SANDRA P" },
+                { roll: 18, name: "SHIVANI SUJESH K" },
+                { roll: 19, name: "SHREYA PRAJESH" },
+                { roll: 20, name: "SREEHARI V K" },
+                { roll: 21, name: "SREESHUKAN T P" },
+                { roll: 22, name: "THANMAYA T" },
+                { roll: 23, name: "UMA PARVATHI K T" },
+                { roll: 24, name: "VAMIKA M" },
+                { roll: 25, name: "VINAYAK P" },
+                { roll: 26, name: "VYBHAV V P" },
+                { roll: 27, name: "VYGA K C" },
+                { roll: 28, name: "YADHAV SREEKANTH" }
+
+            ];
+
+            // fill mini preview list
+
+            // ---------- SUPABASE INIT (replace with your credentials) ----------
+            const SUPABASE_URL = 'https://mbijxyxodddknabhefmc.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1iaWp4eXhvZGRka25hYmhlZm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNDI2NzgsImV4cCI6MjA4ODgxODY3OH0.crhnBb5zsAauauaNXriVallPm6yi1S8ZjSmIG56kdfw';
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            // ---------- DOM elements ----------
+            const loginTab = document.getElementById('loginTabBtn');
+            const signupTab = document.getElementById('signupTabBtn');
+            const loginDiv = document.getElementById('loginForm');
+            const signupDiv = document.getElementById('signupForm');
+            const statusMsg = document.getElementById('statusMessage');
+
+            const loginRoll = document.getElementById('loginRoll');
+            const loginPass = document.getElementById('loginPassword');
+            const loginBtn = document.getElementById('loginBtn');
+
+            const signupRoll = document.getElementById('signupRoll');
+            const signupName = document.getElementById('signupName');
+            const signupPass = document.getElementById('signupPassword');
+            const signupBtn = document.getElementById('signupBtn');
+
+            // ---------- tab switching ----------
+            function setActiveTab(tab) {
+                loginTab.classList.toggle('active', tab === 'login');
+                signupTab.classList.toggle('active', tab === 'signup');
+                loginDiv.style.display = tab === 'login' ? 'block' : 'none';
+                signupDiv.style.display = tab === 'signup' ? 'block' : 'none';
+                statusMsg.innerHTML = tab === 'login' ?
+                    '<i class="fa-regular fa-hand-wave"></i> Welcome back! Login with your roll number' :
+                    '<i class="fa-regular fa-star"></i> New here? Sign up with your roll number';
+            }
+
+            loginTab.addEventListener('click', () => setActiveTab('login'));
+            signupTab.addEventListener('click', () => setActiveTab('signup'));
+
+            // ---------- AUTO FILL name from roll ----------
+            function getNameFromRoll(rollStr) {
+                const rollNum = parseInt(rollStr, 10);
+                if (isNaN(rollNum)) return null;
+                const match = studentRoster.find(s => s.roll === rollNum);
+                return match ? match.name : null;
+            }
+
+            signupRoll.addEventListener('input', (e) => {
+                const roll = e.target.value.trim();
+                const name = getNameFromRoll(roll);
+                if (name) {
+                    signupName.value = name;
+                    signupName.style.background = '#f0e6ff';
+                    setTimeout(() => signupName.style.background = '', 400);
+                } else {
+                    signupName.value = '';
+                }
+            });
+
+            // ---------- status helper ----------
+            function setStatus(text, isError = false) {
+                statusMsg.innerHTML = `<i class="fa-regular ${isError ? 'fa-circle-exclamation' : 'fa-sparkles'}"></i> ${text}`;
+                statusMsg.style.borderLeftColor = isError ? '#f3b0c2' : '#d9b0ee';
+            }
+
+            signupBtn.addEventListener('click', async () => {
+
+                const rollRaw = signupRoll.value.trim();
+                const name = signupName.value.trim();
+                const password = signupPass.value.trim();
+
+                if (!rollRaw || !name || !password) {
+                    setStatus('❌ Roll, name and password required', true);
+                    return;
+                }
+
+                if (password.length < 6) {
+                    setStatus('Password must be at least 6 characters', true);
+                    return;
+                }
+
+                const rollNumber = parseInt(rollRaw, 10);
+
+                setStatus('⏳ Checking registration...');
+
+                const { data: existing, error } = await supabase
+                    .from('students')
+                    .select('roll')
+                    .eq('roll', rollNumber)
+                    .limit(1);
+
+                if (error) {
+                    console.error(error);
+                    setStatus('Database error', true);
+                    return;
+                }
+
+                if (existing && existing.length > 0) {
+                    setStatus('⚠️ Roll number already registered. Please login.', true);
+                    return;
+                }
+
+                const { error: insertErr } = await supabase
+                    .from('students')
+                    .insert([{
+                        roll: rollNumber,
+                        name: name,
+                        password: password
+                    }]);
+
+                if (insertErr) {
+                    console.error(insertErr);
+                    setStatus('Signup failed', true);
+                    return;
+                }
+
+                setStatus('✅ Account created! You can now login.');
+
+                signupRoll.value = '';
+                signupName.value = '';
+                signupPass.value = '';
+
+                setTimeout(() => setActiveTab('login'), 1200);
+
+            });
+
+            loginBtn.addEventListener('click', async () => {
+
+                const rollRaw = loginRoll.value.trim();
+                const password = loginPass.value.trim();
+
+                if (!rollRaw || !password) {
+                    setStatus('Roll number and password required', true);
+                    return;
+                }
+
+                const rollNumber = parseInt(rollRaw, 10);
+
+                setStatus('🔐 Logging in...');
+
+                const { data, error } = await supabase
+                    .from('students')
+                    .select('*')
+                    .eq('roll', rollNumber)
+                    .eq('password', password)
+                    .single();
+
+                if (error || !data) {
+                    setStatus('❌ Invalid roll number or password', true);
+                    return;
+                }
+
+                setStatus('🎉 Login successful! Redirecting...');
+
+           localStorage.setItem("classUserRoll", rollNumber);
+                localStorage.setItem("classUserName", data.name);
+
+                setTimeout(() => {
+                    window.location.href = "home.html";
+                }, 500);
+
+            });
+
+            // initial state
+            setActiveTab('login');
+        })();
+    </script>
+
+    <!-- ==================== SUPABASE SQL (run this in Supabase SQL editor) ==================== -->
+    <!--
+    -- Create students table
+    CREATE TABLE students (
+        id BIGSERIAL PRIMARY KEY,
+        roll INTEGER UNIQUE NOT NULL,
+        name TEXT NOT NULL,
+        auth_id UUID UNIQUE,  -- references auth.users
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    );
+
+    -- Enable Row Level Security
+    ALTER TABLE students ENABLE ROW LEVEL SECURITY;
+
+    -- Create policies
+    CREATE POLICY "Allow public read access" ON students
+        FOR SELECT USING (true);
+
+    CREATE POLICY "Allow public insert during signup" ON students
+        FOR INSERT WITH CHECK (true);
+
+    CREATE POLICY "Allow update by own auth" ON students
+        FOR UPDATE USING (auth.uid() = auth_id);
+
+    -- Optional: Add sample data for the class list (already in code)
+    -- This table will be populated during signup
+    -->
+</body>
+
+</html>
