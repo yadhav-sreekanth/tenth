@@ -286,7 +286,7 @@
 
                 setTimeout(() => {
                     window.location.href = "home.html";
-                }, 500);
+                }, 600);
 
             });
 
@@ -294,34 +294,6 @@
             setActiveTab('login');
         })();
     </script>
-
-    <!-- ==================== SUPABASE SQL (run this in Supabase SQL editor) ==================== -->
-    <!--
-    -- Create students table
-    CREATE TABLE students (
-        id BIGSERIAL PRIMARY KEY,
-        roll INTEGER UNIQUE NOT NULL,
-        name TEXT NOT NULL,
-        auth_id UUID UNIQUE,  -- references auth.users
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-    );
-
-    -- Enable Row Level Security
-    ALTER TABLE students ENABLE ROW LEVEL SECURITY;
-
-    -- Create policies
-    CREATE POLICY "Allow public read access" ON students
-        FOR SELECT USING (true);
-
-    CREATE POLICY "Allow public insert during signup" ON students
-        FOR INSERT WITH CHECK (true);
-
-    CREATE POLICY "Allow update by own auth" ON students
-        FOR UPDATE USING (auth.uid() = auth_id);
-
-    -- Optional: Add sample data for the class list (already in code)
-    -- This table will be populated during signup
-    -->
 </body>
 
 </html>

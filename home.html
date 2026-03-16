@@ -1,309 +1,310 @@
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-    <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Class X - 2K25-26</title>
-            <link rel="icon" href="assets/favicon.png">
-            <link rel="stylesheet" href="styles/main.css">
-            <link rel="stylesheet" href="styles/memory.css">
-        <!-- supabase js -->
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-        <!-- google font -->
-        <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
-        <!-- font awesome -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="assets/favicon.png">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/memory.css">
+    <!-- supabase js -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-        <style>
+    <style>
 
-        </style>
-    </head>
+    </style>
+</head>
 
-    <body>
-        <div class="blob blob1"></div>
-        <div class="blob blob2"></div>
-        <div class="blob blob3"></div>
+<body>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
 
-        <div class="app-container">
-            <!-- sidebar -->
-            <div class="sidebar" id="sidebar">
-                <div class="sidebar-header">
-                    <i class="fa-regular fa-star"></i>
-                    <h2>Class X</h2>
-                </div>
+    <div class="app-container">
+        <!-- sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-regular fa-star"></i>
+                <h2>Class X</h2>
+            </div>
             <div class="nav-menu">
-            
+
                 <div class="nav-item active" data-section="home-section">
                     <i class="fa-regular fa-building"></i>
                     <span>Home</span>
                 </div>
-            
+
                 <div class="nav-item" data-section="community-section">
                     <i class="fa-regular fa-comments"></i>
                     <span>Community</span>
                 </div>
-            
+
                 <div class="nav-item" data-section="memories-section">
                     <i class="fa-regular fa-images"></i>
                     <span>Memories</span>
                 </div>
-            
+
                 <div class="nav-item" data-section="timeline-section">
                     <i class="fa-solid fa-list-ol"></i>
                     <span>Timeline</span>
                 </div>
-            
+
                 <div class="nav-item" data-section="messages-section">
                     <i class="fa-regular fa-envelope"></i>
                     <span>Messages</span>
                 </div>
-            
+
                 <div class="nav-item" data-section="bio-section">
                     <i class="fa-regular fa-id-card"></i>
                     <span>Bio Data</span>
                 </div>
-            
+
                 <div class="nav-item" data-section="settings-section">
                     <i class="fa-solid fa-gear"></i>
                     <span>Settings</span>
                 </div>
-            
+
             </div>
-            </div>
-
-            <!-- mobile menu toggle -->
-            <div class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </div>
-
-            <!-- main content -->
-            <div class="main-content">
-                <!-- top bar with user name -->
-                <div class="top-bar" id="topBar">
-                    <div class="user-profile">
-<div class="user-avatar" id="userAvatar">
-    <img id="avatarImg" style="display:none;width:100%;height:100%;border-radius:50%">
-    <span id="avatarLetters">YS</span>
-</div>
-
-<input type="file" id="avatarUpload" accept="image/*" style="display:none">                        <span class="user-name" id="userDisplayName">YADHAV SREEKANTH</span>
-                    </div>
-                </div>
-
-                <!-- HOME SECTION - Group photo with nicknames -->
-                <div class="section active-section" id="home-section">
-                    <h1 class="section-title">
-                        <i class="fa-regular fa-user"></i> Our class · Teacher + 28  
-                    </h1>
-<div class="glass-card class-intro">
-    <div class="group-photo-container">
-        <img src="assets/group.png" class="group-photo">
-
-
-        <div class="group-overlay">
-            <h2>Class X • Batch 2025-26</h2>
-            <p>
-                A class of 28 amazing students guided by Reena Miss.
-                Every memory here belongs to all of us.
-                This page keeps our journey together.
-            </p>
         </div>
-    </div>
-</div>
-                    <div class="glass-card">
-                        <div class="group-grid" id="groupGrid">
-                            <!-- will be filled by js -->
+
+        <!-- mobile menu toggle -->
+        <div class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <!-- main content -->
+        <div class="main-content">
+            <!-- top bar with user name -->
+            <div class="top-bar" id="topBar">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">
+                        <img id="avatarImg" style="display:none;width:100%;height:100%;border-radius:50%">
+                        <span id="avatarLetters">YS</span>
+                    </div>
+
+                    <input type="file" id="avatarUpload" accept="image/*" style="display:none"> <span class="user-name"
+                        id="userDisplayName">YADHAV SREEKANTH</span>
+                </div>
+            </div>
+
+            <!-- HOME SECTION - Group photo with nicknames -->
+            <div class="section active-section" id="home-section">
+                <h1 class="section-title">
+                    <i class="fa-regular fa-user"></i> Our class · Teacher + 28
+                </h1>
+                <div class="glass-card class-intro">
+                    <div class="group-photo-container">
+                        <img src="assets/group.png" class="group-photo">
+
+
+                        <div class="group-overlay">
+                            <h2>Class X • Batch 2025-26</h2>
+                            <p>
+                                A class of 28 amazing students guided by Reena Miss.
+                                Every memory here belongs to all of us.
+                                This page keeps our journey together.
+                            </p>
                         </div>
                     </div>
                 </div>
+                <div class="glass-card">
+                    <div class="group-grid" id="groupGrid">
+                        <!-- will be filled by js -->
+                    </div>
+                </div>
+            </div>
 
-   
-                <!-- COMMUNITY SECTION -->
-                <div class="section" id="community-section">
-                    <h1 class="section-title">
-                        <i class="fa-regular fa-comments"></i> Community
-                    </h1>
 
-                    <!-- create post -->
-                    <div class="glass-card">
-                        <div id="mediaPreview" style="
+            <!-- COMMUNITY SECTION -->
+            <div class="section" id="community-section">
+                <h1 class="section-title">
+                    <i class="fa-regular fa-comments"></i> Community
+                </h1>
+
+                <!-- create post -->
+                <div class="glass-card">
+                    <div id="mediaPreview" style="
                             display:flex;
                             gap:10px;
                             flex-wrap:wrap;
                             margin-top:10px;
                             "></div>
-                            <div id="uploadProgressBox" style="width:100%;display:none;margin-top:10px;">
-                                <div style="width:100%;background:#2a2a2a;border-radius:10px;height:8px;">
-                                    <div id="uploadProgressBar" style="height:8px;width:0%;background:#6c5ce7;border-radius:10px;transition:0.2s;">
-                                    </div>
-                                </div>
+                    <div id="uploadProgressBox" style="width:100%;display:none;margin-top:10px;">
+                        <div style="width:100%;background:#2a2a2a;border-radius:10px;height:8px;">
+                            <div id="uploadProgressBar"
+                                style="height:8px;width:0%;background:#6c5ce7;border-radius:10px;transition:0.2s;">
                             </div>
-                            <br/><br />
+                        </div>
+                    </div>
+                    <br /><br />
 
-<textarea class="form-input community-text" placeholder="Share something with class..." rows="3"
-    style="border-radius:24px;width:100%;"></textarea> 
-                        <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
-                            <button class="download-btn"><i class="fa-regular fa-image"></i> Attach</button>
-                            <input type="file" id="photoInput" accept="image/*" style="display:none" multiple>
-<button class="download-btn" style="background:#1f1a2b;color:white;" onclick="createPost()">
-    
-    Post
-</button>            
+                    <textarea class="form-input community-text" placeholder="Share something with class..." rows="3"
+                        style="border-radius:24px;width:100%;"></textarea>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                        <button class="download-btn"><i class="fa-regular fa-image"></i> Attach</button>
+                        <input type="file" id="photoInput" accept="image/*" style="display:none" multiple>
+                        <button class="download-btn" style="background:#1f1a2b;color:white;" onclick="createPost()">
+
+                            Post
+                        </button>
 
 
 
-        </div>
-        <br /> <br />
+                    </div>
+                    <br /> <br />
 
-        <div id="postsFeed"></div>
-        </div>
-        </div>
-        
-<!-- MEMORIES SECTION -->
-<div class="section" id="memories-section">
+                    <div id="postsFeed"></div>
+                </div>
+            </div>
 
-    <h1 class="section-title">
-        <i class="fa-regular fa-images"></i> Memories
-    </h1>
+            <!-- MEMORIES SECTION -->
+            <div class="section" id="memories-section">
 
-    <!-- CREATE MEMORY BUTTON -->
-    <button class="download-btn" id="showCreateMemory" style="margin-bottom:20px;">
-        <i class="fa-regular fa-plus"></i> Create New Memory
-    </button>
+                <h1 class="section-title">
+                    <i class="fa-regular fa-images"></i> Memories
+                </h1>
 
-    <!-- CREATE MEMORY FORM (HIDDEN) -->
-    <div class="glass-card" id="createMemoryForm" style="display:none; padding:20px; margin-bottom:20px;">
+                <!-- CREATE MEMORY BUTTON -->
+                <button class="download-btn" id="showCreateMemory" style="margin-bottom:20px;">
+                    <i class="fa-regular fa-plus"></i> Create New Memory
+                </button>
 
-        <h3>Create Memory</h3>
+                <!-- CREATE MEMORY FORM (HIDDEN) -->
+                <div class="glass-card" id="createMemoryForm" style="display:none; padding:20px; margin-bottom:20px;">
 
-        <!-- TITLE -->
-        <input id="memoryTitle" class="form-input" placeholder="Memory Title (Example: Trip to Mysore)">
-<br/>     <!-- DESCRIPTION -->
-        <textarea id="memoryDesc" class="form-input" placeholder="Description" style="margin-top:10px;"></textarea>
+                    <h3>Create Memory</h3>
 
-        <input id="excludeRolls" class="form-input" placeholder="Exclude Roll no"
-            style="margin-top:10px;">
+                    <!-- TITLE -->
+                    <input id="memoryTitle" class="form-input" placeholder="Memory Title (Example: Trip to Mysore)">
+                    <br /> <!-- DESCRIPTION -->
+                    <textarea id="memoryDesc" class="form-input" placeholder="Description"
+                        style="margin-top:10px;"></textarea>
 
-    <div id="memoryPreview" style="
+                    <input id="excludeRolls" class="form-input" placeholder="Exclude Roll no" style="margin-top:10px;">
+
+                    <div id="memoryPreview" style="
             display:flex;
             flex-wrap:wrap;
             gap:12px;
             margin-top:15px;
             "></div>
 
-        <!-- DRAG DROP AREA -->
-        <div class="upload-area" id="dropZone" style="margin-top:15px;">
-            Drag & Drop images or videos here
-        </div>
+                    <!-- DRAG DROP AREA -->
+                    <div class="upload-area" id="dropZone" style="margin-top:15px;">
+                        Drag & Drop images or videos here
+                    </div>
 
-        <!-- FILE INPUT -->
-        <input type="file" id="memoryFiles" multiple hidden>
+                    <!-- FILE INPUT -->
+<input type="file" id="memoryFiles" accept="image/*,video/*" multiple hidden>
 
- 
-        
-        <!-- CREATE BUTTON -->
-        <button class="download-btn" onclick="createMemory()" style="margin-top:15px;">
-            Create Memory
-        </button>
 
-    </div>
-
-    <!-- MEMORIES GRID -->
-    <div class="memories-grid" id="memoriesGrid"></div>
-
-</div>
-
-                <!-- TIMELINE SECTION -->
-                <div class="section" id="timeline-section">
-                    <h1 class="section-title">
-                        <i class="fas fa-timeline"></i> Year timeline · 2025-26
-                    </h1>
-
-                    <button class="download-btn" style="margin-bottom: 1rem;">
-                        <i class="fa-regular fa-plus"></i> Add to timeline
+                    <!-- CREATE BUTTON -->
+                    <button class="download-btn" onclick="createMemory()" style="margin-top:15px;">
+                        Create Memory
                     </button>
 
-                    <div class="timeline" id="timeline">
-        
-                        </div>
-                    </div>
+                </div>
+
+                <!-- MEMORIES GRID -->
+                <div class="memories-grid" id="memoriesGrid"></div>
+
+            </div>
+
+            <!-- TIMELINE SECTION -->
+            <div class="section" id="timeline-section">
+                <h1 class="section-title">
+                    <i class="fas fa-timeline"></i> Year timeline · 2025-26
+                </h1>
+
+                <button class="download-btn" style="margin-bottom: 1rem;">
+                    <i class="fa-regular fa-plus"></i> Add to timeline
+                </button>
+
+                <div class="timeline" id="timeline">
+
                 </div>
             </div>
         </div>
+    </div>
+    </div>
 
-        <script>
-            const currentUserRoll = localStorage.getItem("classUserRoll");
-            (function () {
-                // student roster
-                const studentRoster = [
-                    { roll: 1, name: "AADIDEV M", nickname: "" },
-                    { roll: 2, name: "AAGNA VAIGA U", nickname: "" },
-                    { roll: 3, name: "ADHAN BERNARD ANTONY", nickname: "" },
-                    { roll: 4, name: "AHMED FAHAMDHAAN", nickname: "" },
-                    { roll: 5, name: "AMEYA M P", nickname: "" },
-                    { roll: 6, name: "AVANI KRISHNA P", nickname: "" },
-                    { roll: 7, name: "AVANTHIKA ANAND", nickname: "" },
-                    { roll: 8, name: "AVANTHIKA SHINNITH", nickname: "" },
-                    { roll: 9, name: "DEVANANDA P K", nickname: "" },
-                    { roll: 10, name: "GOVARDHAN P K", nickname: "" },
-                    { roll: 11, name: "KRISHNENDU U", nickname: "" },
-                    { roll: 12, name: "MITHRA SABILASH", nickname: "" },
-                    { roll: 13, name: "NISHAN M", nickname: "" },
-                    { roll: 14, name: "PARVANA P", nickname: "" },
-                    { roll: 15, name: "PIYUSH K", nickname: "" },
-                    { roll: 16, name: "R. ADHARSH", nickname: "" },
-                    { roll: 17, name: "SANDRA P", nickname: "" },
-                    { roll: 18, name: "SHIVANI SUJESH K", nickname: "" },
-                    { roll: 19, name: "SHREYA PRAJESH", nickname: "" },
-                    { roll: 20, name: "SREEHARI V K", nickname: "" },
-                    { roll: 21, name: "SREESHUKAN T P", nickname: "" },
-                    { roll: 22, name: "THANMAYA T", nickname: "" },
-                    { roll: 23, name: "UMA PARVATHI K T", nickname: "" },
-                    { roll: 24, name: "VAMIKA M", nickname: "" },
-                    { roll: 25, name: "VINAYAK P", nickname: "" },
-                    { roll: 26, name: "VYBHAV V P", nickname: "" },
-                    { roll: 27, name: "VYGA K C", nickname: "" },
-                    { roll: 28, name: "YADHAV SREEKANTH", nickname: "" }
-                ];
+    <script>
+        const currentUserRoll = localStorage.getItem("classUserRoll");
+        (function () {
+            // student roster
+            const studentRoster = [
+                { roll: 1, name: "AADIDEV M", nickname: "" },
+                { roll: 2, name: "AAGNA VAIGA U", nickname: "" },
+                { roll: 3, name: "ADHAN BERNARD ANTONY", nickname: "" },
+                { roll: 4, name: "AHMED FAHAMDHAAN", nickname: "" },
+                { roll: 5, name: "AMEYA M P", nickname: "" },
+                { roll: 6, name: "AVANI KRISHNA P", nickname: "" },
+                { roll: 7, name: "AVANTHIKA ANAND", nickname: "" },
+                { roll: 8, name: "AVANTHIKA SHINNITH", nickname: "" },
+                { roll: 9, name: "DEVANANDA P K", nickname: "" },
+                { roll: 10, name: "GOVARDHAN P K", nickname: "" },
+                { roll: 11, name: "KRISHNENDU U", nickname: "" },
+                { roll: 12, name: "MITHRA SABILASH", nickname: "" },
+                { roll: 13, name: "NISHAN M", nickname: "" },
+                { roll: 14, name: "PARVANA P", nickname: "" },
+                { roll: 15, name: "PIYUSH K", nickname: "" },
+                { roll: 16, name: "R. ADHARSH", nickname: "" },
+                { roll: 17, name: "SANDRA P", nickname: "" },
+                { roll: 18, name: "SHIVANI SUJESH K", nickname: "" },
+                { roll: 19, name: "SHREYA PRAJESH", nickname: "" },
+                { roll: 20, name: "SREEHARI V K", nickname: "" },
+                { roll: 21, name: "SREESHUKAN T P", nickname: "" },
+                { roll: 22, name: "THANMAYA T", nickname: "" },
+                { roll: 23, name: "UMA PARVATHI K T", nickname: "" },
+                { roll: 24, name: "VAMIKA M", nickname: "" },
+                { roll: 25, name: "VINAYAK P", nickname: "" },
+                { roll: 26, name: "VYBHAV V P", nickname: "" },
+                { roll: 27, name: "VYGA K C", nickname: "" },
+                { roll: 28, name: "YADHAV SREEKANTH", nickname: "" }
+            ];
 
-                // teacher
-                const classTeacher = {
-                    name: "REENA MISS",
-                    subject: "Class Teacher"
-                };
+            // teacher
+            const classTeacher = {
+                name: "REENA MISS",
+                subject: "Class Teacher"
+            };
 
-                // supabase init (use same as login)
-                const SUPABASE_URL = 'https://mbijxyxodddknabhefmc.supabase.co';
-                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1iaWp4eXhvZGRka25hYmhlZm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNDI2NzgsImV4cCI6MjA4ODgxODY3OH0.crhnBb5zsAauauaNXriVallPm6yi1S8ZjSmIG56kdfw';
-                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            // supabase init (use same as login)
+            const SUPABASE_URL = 'https://mbijxyxodddknabhefmc.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1iaWp4eXhvZGRka25hYmhlZm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNDI2NzgsImV4cCI6MjA4ODgxODY3OH0.crhnBb5zsAauauaNXriVallPm6yi1S8ZjSmIG56kdfw';
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-                function checkAuth() {
+            function checkAuth() {
 
-                    const roll = localStorage.getItem("classUserRoll");
-                    const name = localStorage.getItem("classUserName");
+                const roll = localStorage.getItem("classUserRoll");
+                const name = localStorage.getItem("classUserName");
 
-                    if (!roll) {
-                        window.location.href = "index.html";
-                        return;
-                    }
-
-                    // show user info
-                    document.getElementById("userDisplayName").textContent = name;
-
-                    const initials = name.split(" ").map(n => n[0]).join("").substring(0, 2);
-                    document.getElementById("userAvatar").textContent = initials;
+                if (!roll) {
+                    window.location.href = "index.html";
+                    return;
                 }
 
-                // populate group grid
-                function populateGroupGrid() {
-                    const grid = document.getElementById('groupGrid');
-                    grid.innerHTML = '';
+                // show user info
+                document.getElementById("userDisplayName").textContent = name;
 
-                    // add teacher first
-                    grid.innerHTML += `
+                const initials = name.split(" ").map(n => n[0]).join("").substring(0, 2);
+                document.getElementById("userAvatar").textContent = initials;
+            }
+
+            // populate group grid
+            function populateGroupGrid() {
+                const grid = document.getElementById('groupGrid');
+                grid.innerHTML = '';
+
+                // add teacher first
+                grid.innerHTML += `
                         <div class="student-card" style="border: 2px solid #ffd700;">
                             <div class="teacher-badge">✨ CLASS TEACHER</div>
                             <div class="student-avatar" style="background: linear-gradient(145deg, #ffd700, #ffa500);">👩‍🏫</div>
@@ -312,13 +313,13 @@
                             <div class="nickname-tag"><i class="fa-regular fa-pen-to-square"></i> Set nickname</div>
                         </div>
                     `;
-                    function formatName(name) {
-                        return name.toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
-                    }   
-                    // add students
-                    studentRoster.forEach(s => {
-                        const initials = s.name.split(' ').map(n => n[0]).join('');
-                        grid.innerHTML += `
+                function formatName(name) {
+                    return name.toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
+                }
+                // add students
+                studentRoster.forEach(s => {
+                    const initials = s.name.split(' ').map(n => n[0]).join('');
+                    grid.innerHTML += `
                             <div class="student-card" data-roll="${s.roll}">
                                 <div class="student-avatar">${initials.substring(0, 2)}</div>
                                 <div class="student-name">${s.name}</div>
@@ -329,84 +330,85 @@
                                 </div>
                             </div>
                         `;
-                    });
+                });
+            }
+
+
+            window.setNickname = async function (roll) {
+
+                const nickname = prompt("Enter nickname");
+
+                if (!nickname) return;
+
+                document.getElementById(`nickname-${roll}`).textContent = nickname;
+                document.getElementById(`nickname-${roll}`).parentElement.classList.add("nickname-set");
+
+                await supabase.from("nicknames").insert({
+                    target_roll: roll,
+                    nickname: nickname,
+                    set_by_roll: localStorage.getItem("classUserRoll")
+                });
+            }
+
+            // toggle create memory form
+            document.getElementById('showCreateMemory').addEventListener('click', () => {
+                const form = document.getElementById('createMemoryForm');
+                form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            });
+            const avatar = document.getElementById("userAvatar");
+            const upload = document.getElementById("avatarUpload");
+            const avatarImg = document.getElementById("avatarImg");
+            const avatarLetters = document.getElementById("avatarLetters");
+
+            avatar.addEventListener("click", () => upload.click());
+
+            upload.addEventListener("change", async () => {
+                const file = upload.files[0];
+                if (!file) return;
+
+                const filePath = "avatars/" + Date.now() + "-" + file.name;
+
+                const { error: uploadError } =
+                    await supabase.storage
+                        .from("classfiles")
+                        .upload(filePath, file)
+
+                if (uploadError) {
+                    console.error(uploadError)
+                    alert(uploadError.message)
+                    return
                 }
 
-                
-                window.setNickname = async function (roll) {
+                const { data: urlData } =
+                    supabase.storage.from("classfiles").getPublicUrl(filePath);
+                console.log("Public URL:", urlData.publicUrl); // check it works in console
 
-                    const nickname = prompt("Enter nickname");
+                // ensure container has proper size
+                avatarImg.src = urlData.publicUrl;
+                avatarImg.style.display = "block";
+                avatarImg.style.width = "100%";
+                avatarImg.style.height = "100%";
+                avatarImg.style.objectFit = "cover";
+                avatarLetters.style.display = "none";
+            });
+            document.querySelector(".download-btn:nth-child(1)").addEventListener("click", () => {
+                document.getElementById("photoInput").click();
+            });
 
-                    if (!nickname) return;
+            function renderPosts(posts) {
+                const container = document.getElementById('communityPosts');
+                container.innerHTML = '';
 
-                    document.getElementById(`nickname-${roll}`).textContent = nickname;
-                    document.getElementById(`nickname-${roll}`).parentElement.classList.add("nickname-set");
+                posts.forEach((post) => {
+                    const showDelete = post.posted_by == currentUserRoll;
 
-                    await supabase.from("nicknames").insert({
-                        target_roll: roll,
-                        nickname: nickname,
-                        set_by_roll: localStorage.getItem("classUserRoll")
-                    });
-                }
-
-                // toggle create memory form
-                document.getElementById('showCreateMemory').addEventListener('click', () => {
-                    const form = document.getElementById('createMemoryForm');
-                    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-                });
-                const avatar = document.getElementById("userAvatar");
-                const upload = document.getElementById("avatarUpload");
-                const avatarImg = document.getElementById("avatarImg");
-                const avatarLetters = document.getElementById("avatarLetters");
-
-                avatar.addEventListener("click", () => upload.click());
-
-                upload.addEventListener("change", async () => {
-                    const file = upload.files[0];
-                    if (!file) return;
-
-                    const filePath = "avatars/" + Date.now() + "-" + file.name;
-                   const { error: uploadError } =
-                        await supabase.storage
-                            .from("classfiles")
-                            .upload(path, file)
-
-                    if (uploadError) {
-                        console.error(uploadError)
-                        alert(uploadError.message)
-                        return
-                    }
-
-                    const { data: urlData } = supabase.storage.from("classfiles").getPublicUrl(filePath);
-
-                    console.log("Public URL:", urlData.publicUrl); // check it works in console
-
-                    // ensure container has proper size
-                    avatarImg.src = urlData.publicUrl;
-                    avatarImg.style.display = "block";
-                    avatarImg.style.width = "100%";
-                    avatarImg.style.height = "100%";
-                    avatarImg.style.objectFit = "cover";
-                    avatarLetters.style.display = "none";
-                });
-                document.querySelector(".download-btn:nth-child(1)").addEventListener("click", () => {
-                    document.getElementById("photoInput").click();
-                });
-         
-                function renderPosts(posts) {
-                    const container = document.getElementById('communityPosts');
-                    container.innerHTML = '';
-
-                    posts.forEach((post) => {
-                        const showDelete = post.posted_by == currentUserRoll;
-
-                        const deleteButton = showDelete
-                            ? `<button class="delete-post" onclick="deletePost(${post.id})">
+                    const deleteButton = showDelete
+                        ? `<button class="delete-post" onclick="deletePost(${post.id})">
 <i class="fas fa-trash"></i>
 </button>`
-                            : '';
+                        : '';
 
-                        container.innerHTML += `
+                    container.innerHTML += `
 <div class="post-card">
 
 <div class="post-header">
@@ -420,136 +422,111 @@ ${post.photos ? post.photos.map((p) => `<img src="${p}" class="post-media">`).jo
 
 </div>
 `;
-                    });
-                }
-                async function deletePost(postId) {
-                    await supabase.from('community_posts').delete().eq('id', postId);
+                });
+            }
+            async function deletePost(postId) {
+                await supabase.from('community_posts').delete().eq('id', postId);
 
-                    loadPosts();
-                }
+                loadPosts();
+            }
 
-                async function uploadFile(file, folder) {
-                    const progressBox = document.getElementById('uploadProgressBox');
-                    const progressBar = document.getElementById('uploadProgressBar');
+            async function uploadFile(file, folder) {
 
-                    progressBox.style.display = 'block';
-                    progressBar.style.width = '0%';
+                const progressBox = document.getElementById('uploadProgressBox');
+                const progressBar = document.getElementById('uploadProgressBar');
 
-                    const filePath = `${folder}/${Date.now()}-${file.name}`;
+                progressBox.style.display = 'block';
+                progressBar.style.width = '0%';
 
-                    /* fake smooth progress animation */
+                const filePath = `${folder}/${Date.now()}-${file.name}`;
 
-                    let progress = 0;
+                /* fake smooth progress animation */
 
-                    const interval = setInterval(() => {
-                        if (progress < 90) {
-                            progress += 10;
-                            progressBar.style.width = progress + '%';
-                        }
-                    }, 200);
+                let progress = 0;
 
-                    const { data, error } = await supabase.storage.from('classfiles').upload(filePath, file);
-
-                    clearInterval(interval);
-
-                    if (error) {
-                        console.error('Upload error:', error);
-                        progressBox.style.display = 'none';
-                        return null;
+                const interval = setInterval(() => {
+                    if (progress < 90) {
+                        progress += 10;
+                        progressBar.style.width = progress + '%';
                     }
+                }, 200);
 
-                    progressBar.style.width = '100%';
+                const { data, error } =
+                    await supabase.storage
+                        .from('classfiles')
+                        .upload(filePath, file);
 
-                    setTimeout(() => {
-                        progressBox.style.display = 'none';
-                    }, 500);
+                clearInterval(interval);
 
-                    const { data: publicUrl } = supabase.storage.from('classfiles').getPublicUrl(filePath);
-
-                    return publicUrl.publicUrl;
+                if (error) {
+                    console.error('Upload error:', error);
+                    progressBox.style.display = 'none';
+                    return null;
                 }
-                // store selected file URLs globally
-                let selectedMedia = { photos: [] };
 
-                document.getElementById('photoInput').addEventListener('change', async (e) => {
-                    const preview = document.getElementById('mediaPreview');
+                progressBar.style.width = '100%';
 
-                    for (let f of e.target.files) {
-                        const url = await uploadFile(f, 'photos');
-                        selectedMedia.photos.push(url);
+                setTimeout(() => {
+                    progressBox.style.display = 'none';
+                }, 500);
 
-                        const index = selectedMedia.photos.length - 1;
+                const { data: publicUrl } =
+                    supabase.storage
+                        .from('classfiles')
+                        .getPublicUrl(filePath);
 
-                        const div = document.createElement('div');
-                        div.className = 'preview-item';
+                return publicUrl.publicUrl;
+            }
 
-                        const img = document.createElement('img');
-                        img.src = URL.createObjectURL(f);
+            window.createPost = async function () {
+                const text = document.querySelector('.community-text').value;
+                const roll = parseInt(localStorage.getItem('classUserRoll'));
 
-                        const remove = document.createElement('div');
-                        remove.className = 'remove-media';
-                        remove.innerHTML = '✕';
-
-                        remove.onclick = () => {
-                            selectedMedia.photos.splice(index, 1);
-                            div.remove();
-                        };
-
-                        div.appendChild(img);
-                        div.appendChild(remove);
-                        preview.appendChild(div);
-                    }
+                const { data, error } = await supabase.from('community_posts').insert({
+                    content: text,
+                    posted_by: roll,
+                    photos: selectedMedia.photos
                 });
 
-                window.createPost = async function () {
-                    const text = document.querySelector('.community-text').value;
-                    const roll = parseInt(localStorage.getItem('classUserRoll'));
-
-                    const { data, error } = await supabase.from('community_posts').insert({
-                        content: text,
-                        posted_by: roll,
-                        photos: selectedMedia.photos
-                    });
-
-                    if (error) {
-                        console.error(error);
-                        alert(error.message);
-                        return;
-                    }
-
-                    // reset form
-                    document.querySelector('.community-text').value = '';
-                    selectedMedia = { photos: [] };
-                    loadPosts();
-                };
-                function getName(roll) {
-                    const student = studentRoster.find((s) => s.roll == roll);
-
-                    if (student) {
-                        return student.name;
-                    }
-
-                    return 'Unknown';
+                if (error) {
+                    console.error(error);
+                    alert(error.message);
+                    return;
                 }
-                async function loadPosts() {
-                    const roll = parseInt(localStorage.getItem('classUserRoll'));
 
-                    const { data: posts } = await supabase.from('community_posts').select('*');
+                // reset form
+                document.querySelector('.community-text').value = '';
+                selectedMedia = { photos: [] };
+                loadPosts();
+            };
+            function getName(roll) {
+                const student = studentRoster.find((s) => s.roll == roll);
 
-                    const container = document.getElementById('postsFeed');
-                    container.innerHTML = '';
+                if (student) {
+                    return student.name;
+                }
 
-                    for (let p of posts) {
-                        // Build media HTML
-                        let mediaHtml = '';
+                return 'Unknown';
+            }
+            async function loadPosts() {
+                const roll = parseInt(localStorage.getItem('classUserRoll'));
 
-                        if (p.photos && p.photos.length > 0) {
-                            for (let url of p.photos) {
-                                mediaHtml += `<img src="${url}" class="post-media" loading="lazy">`;
-                            }
+                const { data: posts } = await supabase.from('community_posts').select('*');
+
+                const container = document.getElementById('postsFeed');
+                container.innerHTML = '';
+
+                for (let p of posts) {
+                    // Build media HTML
+                    let mediaHtml = '';
+
+                    if (p.photos && p.photos.length > 0) {
+                        for (let url of p.photos) {
+                            mediaHtml += `<img src="${url}" class="post-media" loading="lazy">`;
                         }
+                    }
 
-                        container.innerHTML += `
+                    container.innerHTML += `
 <div class="post-card">
     <div class="post-header">
         <div class="post-avatar">${p.posted_by}</div>
@@ -573,365 +550,446 @@ ${new Date(p.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-di
             <i class="fa-regular fa-comment"></i> Comment
         </div>
         ${p.posted_by == roll
-                                ? `
+                            ? `
 <div class="post-action" onclick="deletePost(${p.id})">
 <i class="fa-regular fa-trash-can"></i> Delete
 </div>
 `
-                                : ``
-                            }
+                            : ``
+                        }
     </div>
 
     <div id="comments-${p.id}" class="comments-container"></div>
 </div>`;
 
-                        updateLikeCount(p.id);
-                    }
+                    updateLikeCount(p.id);
                 }
-                window.deletePost = async function (postId) {
-                    if (!confirm('Delete this post?')) return;
+            }
+            window.deletePost = async function (postId) {
+                if (!confirm('Delete this post?')) return;
 
-                    await supabase.from('community_posts').delete().eq('id', postId);
+                await supabase.from('community_posts').delete().eq('id', postId);
 
-                    loadPosts();
-                };
+                loadPosts();
+            };
 
-                window.createMemory = async function () {
+            window.createMemory = async function () {
 
-                    const title =
-                        document.getElementById("memoryTitle").value
+                const title =
+                    document.getElementById("memoryTitle").value
 
-                    const desc =
-                        document.getElementById("memoryDesc").value
+                const desc =
+                    document.getElementById("memoryDesc").value
 
-                   const files = memoryFilesArray
+                const files = memoryFilesArray
 
-     const excludeInput = document.getElementById("excludeRolls")
-                    const exclude = excludeInput ? excludeInput.value : null
+                const excludeInput = document.getElementById("excludeRolls")
+                const exclude = excludeInput ? excludeInput.value : null
 
-                    const roll =
-                        parseInt(localStorage.getItem("classUserRoll"))
+                const roll =
+                    parseInt(localStorage.getItem("classUserRoll"))
 
-                    if (files.length == 0) {
-                        alert("Add files first")
-                        return
-                    }
+                if (files.length == 0) {
+                    alert("Add files first")
+                    return
+                }
 
-                    let urls = []
+                let urls = []
 
-                    for (let file of files) {
+                for (let file of files) {
 
-                        const path = "memories/" + Date.now() + "-" + file.name
+                    const Filepath = "memories/" + Date.now() + "-" + file.name
 
-                        await supabase.storage
-                            .from("classfiles")
-                            .upload(path, file)
-
-                        const { data } =
-                            supabase.storage
-                                .from("classfiles")
-                                .getPublicUrl(path)
-
-                        urls.push(data.publicUrl)
-
-                    }
-
-                    const cover = urls[coverIndex] || urls[0]
-                    const excludeArray =
-                        exclude ? exclude.split(",").map(n => parseInt(n)) : null
-
-                   const { data: memory, error: memError } =
-                        await supabase
-                            .from("memories")
-                            .insert({
-                                topic: title,
-                                description: desc,
-                                cover_image: cover,
-                                created_by: roll,
-                                visibility_exclude: excludeArray
-                            })
-                            .select()
-                            .single()
-
-                    if (memError) {
-                        console.error(memError)
-                        alert(memError.message)
-                        return
-                    }
-
-                    for (let url of urls) {
-
-                        const { error: imgError } =
-                            await supabase
-                                .from("memory_media")
-                                .insert({
-                                    memory_id: memory.id,
-                                    image_url: url,
-                                    uploaded_by: roll
-                                })
-
-                        if (imgError) console.error(imgError)
-
-                    }
-
-                    loadMemories()
-                    memoryFilesArray = []
-                    preview.innerHTML = ""
-                    document.getElementById("memoryTitle").value = ""
-                    document.getElementById("memoryDesc").value = ""
-                } 
-                async function loadMemories() {
-
-                    const roll =
-                        parseInt(localStorage.getItem("classUserRoll"))
+                    await supabase.storage
+                        .from("classfiles")
+                        .upload(Filepath, file)
 
                     const { data } =
+                        supabase.storage
+                            .from("classfiles")
+                            .getPublicUrl(Filepath)
+
+                    urls.push(data.publicUrl)
+
+                }
+
+                const cover = urls[coverIndex] || urls[0]
+                const excludeArray =
+                    exclude ? exclude.split(",").map(n => parseInt(n)) : null
+
+                const { data: memory, error: memError } =
+                    await supabase
+                        .from("memories")
+                        .insert({
+                            topic: title,
+                            description: desc,
+                            cover_image: cover,
+                            created_by: roll,
+                            visibility_exclude: excludeArray
+                        })
+                        .select()
+                        .single()
+
+                if (memError) {
+                    console.error(memError)
+                    alert(memError.message)
+                    return
+                }
+
+                for (let url of urls) {
+
+                    const { error: imgError } =
                         await supabase
-                            .from("memories")
-                            .select("*")
-                            .order("created_at", { ascending: false })
+                            .from("memory_media")
+                            .insert({
+                                memory_id: memory.id,
+                                media_url: url,
+                                uploaded_by: roll
+                            })
 
-                    const grid =
-                        document.getElementById("memoriesGrid")
+                    if (imgError) console.error(imgError)
 
-                    grid.innerHTML = ""
+                }
 
-                    data.forEach(m => {
+                loadMemories()
+                memoryFilesArray = []
+                preview.innerHTML = ""
+                document.getElementById("memoryTitle").value = ""
+                document.getElementById("memoryDesc").value = ""
+            }
+            async function loadMemories() {
 
-                        if (m.visibility_exclude &&
-                            m.visibility_exclude.includes(roll)) return
+                const roll =
+                    parseInt(localStorage.getItem("classUserRoll"))
 
-                        grid.innerHTML += `
-<div class="memory-card"
-onclick="openMemory(${m.id})">
+                const { data } =
+                    await supabase
+                        .from("memories")
+                        .select("*")
+                        .order("created_at", { ascending: false })
 
-<img src="${m.cover_image}">
+                const grid =
+                    document.getElementById("memoriesGrid")
 
+                grid.innerHTML = ""
+
+                data.forEach(m => {
+
+                    if (m.visibility_exclude &&
+                        m.visibility_exclude.includes(roll)) return
+
+                    const roll = parseInt(localStorage.getItem("classUserRoll"))
+
+                    grid.innerHTML += `
+<div class="memory-card">
+
+<img src="${m.cover_image}" loading="lazy" onclick="openMemory(${m.id})">
 <div class="memory-overlay">
 <h3>${m.topic}</h3>
 <p>${m.description || ""}</p>
 </div>
 
+${m.created_by == roll ? `
+<div class="memory-delete" onclick="deleteMemory(${m.id})">
+<i class="fa-solid fa-trash"></i>
+</div>
+` : ``}
+
 </div>
 `
 
-                    })
+                })
 
-                }
-            async function openMemory(id) {
+            }
+            window.deleteMemory = async function (id) {
 
-                    const { data } =
-                        await supabase
-                           .from("memory_media")
-                            .select("*")
-                            .eq("memory_id", id)
+                if (!confirm("Delete this memory?")) return
 
-                    let gallery = document.createElement("div")
+                await supabase
+                    .from("memory_media")
+                    .delete()
+                    .eq("memory_id", id)
 
-                    gallery.className = "memory-gallery"
+                await supabase
+                    .from("memories")
+                    .delete()
+                    .eq("id", id)
 
-                    gallery.innerHTML = `
-<div class="close-gallery" onclick="this.parentElement.remove()">✕</div>
+                loadMemories()
+            }
+            window.openMemory = async function (id) {
+
+                const { data, error } =
+                    await supabase
+                        .from("memory_media")
+                        .select("*")
+                        .eq("memory_id", id)
+
+                console.log("Memory ID clicked:", id)
+                console.log("Images returned:", data)
+                console.log("Error:", error)
+
+                let index = 0
+
+                const viewer = document.createElement("div")
+                viewer.className = "memory-viewer"
+
+                viewer.innerHTML = `
+<div class="viewer-close" onclick="this.parentElement.remove()">✕</div>
+
+<button class="viewer-btn left">❮</button>
+
+<div class="viewer-media"></div>
+<button class="viewer-btn right">❯</button>
 `
 
-                   data.forEach(f => {
+                document.body.appendChild(viewer)
 
-                    gallery.innerHTML += `
-<img 
-src="${f.image_url}"
-class="gallery-img"
-onclick="tapDownload('${f.image_url}')"
->
-`
+                const img = viewer.querySelector(".viewer-img")
 
-                })
+                function show() {
 
-                    document.body.appendChild(gallery)
-
-                }
-
-                let tap = 0
-
-                function tapDownload(url) {
-
-                    tap++
-
-                    if (tap == 3) {
-
-                        const a = document.createElement("a")
-                        a.href = url
-                        a.download = "memory"
-                        a.click()
-
-                        tap = 0
-
+                    if (!data || data.length === 0) {
+                        alert("No images in this memory")
+                        viewer.remove()
+                        return
                     }
 
-                    setTimeout(() => tap = 0, 700)
+                    const container = viewer.querySelector(".viewer-media")
+                    const url = data[index].media_url
 
+                    if (url.match(/\.(mp4|webm|ogg)$/i)) {
+                        container.innerHTML = `<video src="${url}" controls autoplay></video>`
+                    } else {
+                        container.innerHTML = `<img src="${url}">`
+                    }                }
+                show()
+                viewer.querySelector(".left").onclick = () => {
+                    index--
+                    if (index < 0) index = data.length - 1
+                    show()
                 }
 
-                async function compressImage(file) {
+                viewer.querySelector(".right").onclick = () => {
+                    index++
+                    if (index >= data.length) index = 0
+                    show()
+                }
+                /* swipe support */
 
-                    const img = await createImageBitmap(file);
+                let startX = 0
 
-                    const canvas = document.createElement("canvas");
+                img.addEventListener("touchstart", e => {
+                    startX = e.touches[0].clientX
+                })
 
-                    const MAX = 1200;
+                img.addEventListener("touchend", e => {
 
-                    let width = img.width;
-                    let height = img.height;
+                    let diff = e.changedTouches[0].clientX - startX
 
-                    if (width > MAX) {
-                        height = height * (MAX / width);
-                        width = MAX;
+                    if (diff > 50) {
+                        index--
+                        if (index < 0) index = data.length - 1
+                        show()
                     }
 
-                    canvas.width = width;
-                    canvas.height = height;
+                    if (diff < -50) {
+                        index++
+                        if (index >= data.length) index = 0
+                        show()
+                    }
 
-                    const ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0, width, height);
+                })
 
-                    return new Promise(resolve => {
-                        canvas.toBlob(resolve, "image/jpeg", 0.7);
-                    });
+            }
+
+            let tap = 0
+
+            function tapDownload(url) {
+
+                tap++
+
+                if (tap == 3) {
+
+                    const a = document.createElement("a")
+                    a.href = url
+                    a.download = "memory"
+                    a.click()
+
+                    tap = 0
 
                 }
 
-              
-     const dropZone = document.getElementById("dropZone")
-                const memoryInput = document.getElementById("memoryFiles")
-                const preview = document.getElementById("memoryPreview")
+                setTimeout(() => tap = 0, 700)
 
-                let memoryFilesArray = []
-                let coverIndex = 0
+            }
 
-                dropZone.addEventListener("click", () => {
-                    memoryInput.click()
-                })
+            async function compressImage(file) {
 
-                dropZone.addEventListener("dragover", e => {
-                    e.preventDefault()
-                })
+                const img = await createImageBitmap(file);
 
-                dropZone.addEventListener("drop", e => {
-                    e.preventDefault()
+                const canvas = document.createElement("canvas");
 
-                    memoryFilesArray = [...e.dataTransfer.files]
-                    memoryInput.files = e.dataTransfer.files
+                const MAX = 1200;
 
-                    showPreview()
-                })
+                let width = img.width;
+                let height = img.height;
 
-                memoryInput.addEventListener("change", () => {
+                if (width > MAX) {
+                    height = height * (MAX / width);
+                    width = MAX;
+                }
 
-                    memoryFilesArray = [...memoryInput.files]
+                canvas.width = width;
+                canvas.height = height;
 
-                    showPreview()
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, width, height);
 
-                })
+                return new Promise(resolve => {
+                    canvas.toBlob(resolve, "image/jpeg", 0.7);
+                });
 
-                function showPreview() {
+            }
 
-                    preview.innerHTML = ""
 
-                    memoryFilesArray.forEach((file, index) => {
+            const dropZone = document.getElementById("dropZone")
+            const memoryInput = document.getElementById("memoryFiles")
+            const preview = document.getElementById("memoryPreview")
 
-                        const reader = new FileReader()
+            let memoryFilesArray = []
+            let coverIndex = 0
 
-                        reader.onload = e => {
+            dropZone.addEventListener("click", () => {
+                memoryInput.click()
+            })
 
-                            const div = document.createElement("div")
-                            div.className = "preview-item"
+            dropZone.addEventListener("dragover", e => {
+                e.preventDefault()
+            })
 
-                            div.innerHTML = `
-<img src="${e.target.result}">
+            dropZone.addEventListener("drop", e => {
+                e.preventDefault()
 
+                memoryFilesArray = [...e.dataTransfer.files]
+                memoryInput.files = e.dataTransfer.files
+
+                showPreview()
+            })
+
+            memoryInput.addEventListener("change", () => {
+
+                memoryFilesArray = [...memoryInput.files]
+
+                showPreview()
+
+            })
+
+            function showPreview() {
+
+                preview.innerHTML = ""
+
+                memoryFilesArray.forEach((file, index) => {
+
+                    const reader = new FileReader()
+
+                    reader.onload = e => {
+
+                        const div = document.createElement("div")
+                        div.className = "preview-item"
+                        let mediaTag = ""
+
+                        if (file.type.startsWith("video")) {
+                            mediaTag = `<video src="${e.target.result}" muted></video>`
+                        } else {
+                            mediaTag = `<img src="${e.target.result}">`
+                        }
+
+                        div.innerHTML = `
+${mediaTag}
 <div class="remove-media">✕</div>
-
 <div class="cover-badge ${index === 0 ? 'active' : ''}">
 Cover
 </div>
 `
 
-                            /* remove file */
+                        /* remove file */
 
-                            div.querySelector(".remove-media").onclick = () => {
+                        div.querySelector(".remove-media").onclick = () => {
 
-                                memoryFilesArray.splice(index, 1)
+                            memoryFilesArray.splice(index, 1)
 
-                                showPreview()
-
-                            }
-
-                            /* set cover */
-
-                            div.querySelector(".cover-badge").onclick = () => {
-
-                                coverIndex = index
-
-                                document.querySelectorAll(".cover-badge")
-                                    .forEach(b => b.classList.remove("active"))
-
-                                div.querySelector(".cover-badge")
-                                    .classList.add("active")
-
-                            }
-
-                            preview.appendChild(div)
+                            showPreview()
 
                         }
 
-                        reader.readAsDataURL(file)
+                        /* set cover */
 
-                    })
+                        div.querySelector(".cover-badge").onclick = () => {
 
-                }
+                            coverIndex = index
 
-                window.likePost = async function (postId) {
+                            document.querySelectorAll(".cover-badge")
+                                .forEach(b => b.classList.remove("active"))
 
-                    const roll = parseInt(localStorage.getItem("classUserRoll"))
+                            div.querySelector(".cover-badge")
+                                .classList.add("active")
 
-                    const { data } = await supabase
-                        .from("post_reactions")
-                        .select("*")
-                        .eq("post_id", postId)
-                        .eq("user_roll", roll)
+                        }
 
-                    if (data.length > 0) {
-                        alert("You already liked this post")
-                        return
+                        preview.appendChild(div)
+
                     }
 
-                    await supabase
-                        .from("post_reactions")
-                        .insert({
-                            post_id: postId,
-                            user_roll: roll,
-                            reaction_type: "like"
-                        })
+                    reader.readAsDataURL(file)
 
-                    document.getElementById("likeBtn-" + postId).classList.add("liked")
+                })
 
-                    updateLikeCount(postId)
+            }
+
+            window.likePost = async function (postId) {
+
+                const roll = parseInt(localStorage.getItem("classUserRoll"))
+
+                const { data } = await supabase
+                    .from("post_reactions")
+                    .select("*")
+                    .eq("post_id", postId)
+                    .eq("user_roll", roll)
+
+                if (data.length > 0) {
+                    alert("You already liked this post")
+                    return
                 }
-                async function updateLikeCount(postId) {
 
-                    const { count } = await supabase
-                        .from("post_reactions")
-                        .select("*", { count: "exact", head: true })
-                        .eq("post_id", postId)
+                await supabase
+                    .from("post_reactions")
+                    .insert({
+                        post_id: postId,
+                        user_roll: roll,
+                        reaction_type: "like"
+                    })
 
-                    const el = document.getElementById("likeCount-" + postId)
-                    if (el) el.innerText = count
+                document.getElementById("likeBtn-" + postId).classList.add("liked")
 
-                }
-                window.showComments = async function (postId) {
+                updateLikeCount(postId)
+            }
+            async function updateLikeCount(postId) {
 
-                    const container = document.getElementById("comments-" + postId)
+                const { count } = await supabase
+                    .from("post_reactions")
+                    .select("*", { count: "exact", head: true })
+                    .eq("post_id", postId)
 
-                   container.innerHTML = `
+                const el = document.getElementById("likeCount-" + postId)
+                if (el) el.innerText = count
+
+            }
+            window.showComments = async function (postId) {
+
+                const container = document.getElementById("comments-" + postId)
+
+                container.innerHTML = `
 
 <div class="comment-box">
 
@@ -949,49 +1007,49 @@ Post
 <div id="commentList-${postId}" class="comment-list"></div>
 `
 
-                    loadComments(postId)
+                loadComments(postId)
 
-                }
-                window.addComment = async function (postId) {
+            }
+            window.addComment = async function (postId) {
 
-                    const text = document.getElementById("commentInput-" + postId).value
+                const text = document.getElementById("commentInput-" + postId).value
+                const roll = parseInt(localStorage.getItem("classUserRoll"))
+
+                await supabase
+                    .from("post_comments")
+                    .insert({
+                        post_id: postId,
+                        user_roll: roll,
+                        comment: text
+                    })
+
+                loadComments(postId)
+
+            }
+            async function loadComments(postId) {
+
+                const { data } = await supabase
+                    .from("post_comments")
+                    .select("*")
+                    .eq("post_id", postId)
+
+                const container = document.getElementById("commentList-" + postId)
+
+                container.innerHTML = ""
+
+                data.forEach(async c => {
+
                     const roll = parseInt(localStorage.getItem("classUserRoll"))
 
-                    await supabase
-                        .from("post_comments")
-                        .insert({
-                            post_id: postId,
-                            user_roll: roll,
-                            comment: text
-                        })
-
-                    loadComments(postId)
-
-                }
-                async function loadComments(postId) {
-
-                    const { data } = await supabase
-                        .from("post_comments")
+                    const { data: liked } = await supabase
+                        .from("post_reactions")
                         .select("*")
-                        .eq("post_id", postId)
+                        .eq("comment_id", c.id)
+                        .eq("user_roll", roll)
 
-                    const container = document.getElementById("commentList-" + postId)
+                    const likedClass = liked.length > 0 ? "liked" : ""
 
-                    container.innerHTML = ""
-
-                    data.forEach(async c => {
-
-                        const roll = parseInt(localStorage.getItem("classUserRoll"))
-
-                        const { data: liked } = await supabase
-                            .from("post_reactions")
-                            .select("*")
-                            .eq("comment_id", c.id)
-                            .eq("user_roll", roll)
-
-                        const likedClass = liked.length > 0 ? "liked" : ""
-
-                        container.innerHTML += `
+                    container.innerHTML += `
 <div class="comment-item">
 
 <span class="comment-user">${getName(c.user_roll)}</span>
@@ -1013,109 +1071,109 @@ Post
 </div>
 `
 
-                        updateCommentLike(c.id)
+                    updateCommentLike(c.id)
 
+                })
+
+            }
+            window.likeComment = async function (commentId) {
+
+                const roll = parseInt(localStorage.getItem("classUserRoll"))
+
+                const { data } = await supabase
+                    .from("post_reactions")
+                    .select("*")
+                    .eq("comment_id", commentId)
+                    .eq("user_roll", roll)
+
+                if (data.length > 0) {
+                    alert("You already liked this comment")
+                    return
+                }
+
+                await supabase
+                    .from("post_reactions")
+                    .insert({
+                        comment_id: commentId,
+                        user_roll: roll,
+                        reaction_type: "like"
                     })
 
-                }
-                window.likeComment = async function (commentId) {
+                document.querySelector(`[onclick="likeComment(${commentId})"]`)
+                    .classList.add("liked")
 
-                    const roll = parseInt(localStorage.getItem("classUserRoll"))
+                updateCommentLike(commentId)
 
-                    const { data } = await supabase
-                        .from("post_reactions")
-                        .select("*")
-                        .eq("comment_id", commentId)
-                        .eq("user_roll", roll)
+            }
+            async function updateCommentLike(commentId) {
 
-                    if (data.length > 0) {
-                        alert("You already liked this comment")
-                        return
+                const { count } = await supabase
+                    .from("post_reactions")
+                    .select("*", { count: "exact", head: true })
+                    .eq("comment_id", commentId)
+
+                document.getElementById("commentLike-" + commentId).innerText = count
+
+            }
+            window.deleteComment = async function (commentId, postId) {
+
+                if (!confirm("Delete this comment?")) return
+
+                await supabase
+                    .from("post_comments")
+                    .delete()
+                    .eq("id", commentId)
+
+                loadComments(postId)
+
+            }
+
+            function canViewMemory(memory) {
+
+                const roll = parseInt(localStorage.getItem("classUserRoll"))
+
+                if (!memory.visibility_exclude) return true
+
+                return !memory.visibility_exclude.includes(roll)
+            }
+            // sidebar navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('.section');
+
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // remove active from all nav items
+                    navItems.forEach(n => n.classList.remove('active'));
+                    item.classList.add('active');
+
+                    // hide all sections
+                    sections.forEach(s => s.classList.remove('active-section'));
+
+                    // show selected section
+                    const sectionId = item.dataset.section;
+                    document.getElementById(sectionId).classList.add('active-section');
+
+                    // close sidebar on mobile
+                    if (window.innerWidth <= 1024) {
+                        document.getElementById('sidebar').classList.remove('open');
                     }
-
-                    await supabase
-                        .from("post_reactions")
-                        .insert({
-                            comment_id: commentId,
-                            user_roll: roll,
-                            reaction_type: "like"
-                        })
-
-                    document.querySelector(`[onclick="likeComment(${commentId})"]`)
-                        .classList.add("liked")
-
-                    updateCommentLike(commentId)
-
-                }
-                async function updateCommentLike(commentId) {
-
-                    const { count } = await supabase
-                        .from("post_reactions")
-                        .select("*", { count: "exact", head: true })
-                        .eq("comment_id", commentId)
-
-                    document.getElementById("commentLike-" + commentId).innerText = count
-
-                }
-                window.deleteComment = async function (commentId, postId) {
-
-                    if (!confirm("Delete this comment?")) return
-
-                    await supabase
-                        .from("post_comments")
-                        .delete()
-                        .eq("id", commentId)
-
-                    loadComments(postId)
-
-                }
-          
-                function canViewMemory(memory) {
-
-                    const roll = parseInt(localStorage.getItem("classUserRoll"))
-
-                    if (!memory.visibility_exclude) return true
-
-                    return !memory.visibility_exclude.includes(roll)
-                }
-                // sidebar navigation
-                const navItems = document.querySelectorAll('.nav-item');
-                const sections = document.querySelectorAll('.section');
-
-                navItems.forEach(item => {
-                    item.addEventListener('click', () => {
-                        // remove active from all nav items
-                        navItems.forEach(n => n.classList.remove('active'));
-                        item.classList.add('active');
-
-                        // hide all sections
-                        sections.forEach(s => s.classList.remove('active-section'));
-
-                        // show selected section
-                        const sectionId = item.dataset.section;
-                        document.getElementById(sectionId).classList.add('active-section');
-
-                        // close sidebar on mobile
-                        if (window.innerWidth <= 1024) {
-                            document.getElementById('sidebar').classList.remove('open');
-                        }
-                    });
                 });
+            });
 
-                // mobile menu toggle
-                document.getElementById('menuToggle').addEventListener('click', () => {
-                    document.getElementById('sidebar').classList.toggle('open');
-                });
-                setInterval(loadPosts, 30000);   
-                // initialize
-                checkAuth();
-                populateGroupGrid();
-                loadPosts();
-                loadMemories();
-            })();
-            
-        </script>
+            // mobile menu toggle
+            document.getElementById('menuToggle').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.toggle('open');
+            });
+            setInterval(loadPosts, 30000);
+            // initialize
+            checkAuth();
+            populateGroupGrid();
+            loadPosts();
+            loadMemories();
+        })();
 
-    </body>
+    </script>
 
-    </html>
+</body>
+
+</html>
