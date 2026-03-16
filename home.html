@@ -18,15 +18,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<script>
-    function checkAuth() {
+    <script>
+        function checkAuth() {
             const roll = localStorage.getItem("classUserRoll");
 
             if (!roll) {
                 window.location.replace("index.html");
             }
         }
-</script>
+    </script>
 
 </head>
 
@@ -82,18 +82,21 @@
                     <span>Settings</span>
                 </div>
 
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
             </div>
         </div>
 
         <!-- mobile menu toggle -->
-     
+
         <!-- main content -->
         <div class="main-content">
             <!-- top bar with user name -->
             <div class="top-bar" id="topBar">
-                   <div class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-        </div>
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
 
                 <div class="user-profile">
                     <div class="user-avatar" id="userAvatar">
@@ -160,9 +163,9 @@
                     <textarea class="form-input community-text" placeholder="Share something with class..." rows="3"
                         style="border-radius:24px;width:100%;"></textarea>
                     <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
-                    <button class="download-btn" onclick="document.getElementById('photoInput').click()">
-                        <i class="fa-regular fa-image"></i> Attach
-                    </button>
+                        <button class="download-btn" onclick="document.getElementById('photoInput').click()">
+                            <i class="fa-regular fa-image"></i> Attach
+                        </button>
                         <input type="file" id="photoInput" accept="image/*" style="display:none" multiple>
                         <button class="download-btn" style="background:#1f1a2b;color:white;" onclick="createPost()">
 
@@ -209,7 +212,7 @@
             gap:12px;
             margin-top:15px;
             "></div>
-<div id="uploadCounter" style="margin-top:8px;font-weight:600;"></div>
+                    <div id="uploadCounter" style="margin-top:8px;font-weight:600;"></div>
                     <!-- DRAG DROP AREA -->
                     <div class="upload-area" id="dropZone" style="margin-top:15px;">
                         Drag & Drop images or videos here
@@ -274,10 +277,10 @@
                     <div class="chat-main">
 
                         <div class="chat-header" style="display:flex;justify-content:space-between;align-items:center;">
-                        <button class="back-btn" onclick="closeChat()">←</button>
+                            <button class="back-btn" onclick="closeChat()">←</button>
 
                             <span id="chatHeader">Select a chat</span>
-                        
+
                             <button onclick="clearChat()" style="
                         background:#ff4d4d;
                         border:none;
@@ -287,9 +290,9 @@
                         cursor:pointer;
                         font-size:12px;
                         ">
-                                <i class="fa-solid fa-trash"></i> 
+                                <i class="fa-solid fa-trash"></i>
                             </button>
-                        
+
                         </div>
 
                         <div id="chatMessages" class="chat-messages"></div>
@@ -410,7 +413,7 @@ ${msg.message}
                     }
                 )
                 .subscribe()
-                let profileCache = {};
+            let profileCache = {};
 
             async function loadProfiles() {
                 const { data } = await supabase
@@ -465,7 +468,7 @@ ${msg.message}
             };
 
 
-    
+
             // populate group grid
             function populateGroupGrid() {
                 const grid = document.getElementById('groupGrid');
@@ -482,7 +485,7 @@ ${msg.message}
                         </div>
                     `;
 
-                    async function getAvatarUrl(roll) {
+                async function getAvatarUrl(roll) {
 
                     const { data } = await supabase
                         .from("profiles")
@@ -493,7 +496,7 @@ ${msg.message}
                     return data?.avatar_url || null;
                 }
 
-                
+
                 function formatName(name) {
                     return name.toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
                 }
@@ -537,7 +540,7 @@ ${renderAvatar(s.roll, initials.substring(0, 2))}
                 const form = document.getElementById('createMemoryForm');
                 form.style.display = form.style.display === 'none' ? 'block' : 'none';
             });
-          const avatar = document.getElementById("userAvatar");
+            const avatar = document.getElementById("userAvatar");
             const upload = document.getElementById("avatarUpload");
             const avatarImg = document.getElementById("avatarImg");
             const avatarLetters = document.getElementById("avatarLetters");
@@ -707,7 +710,7 @@ ${post.photos ? post.photos.map((p) => `<img src="${p}" class="post-media">`).jo
 
                 // reset form
                 document.querySelector('.community-text').value = '';
-               selectedMedia = { photos: [] };
+                selectedMedia = { photos: [] };
                 document.getElementById("mediaPreview").innerHTML = "";
                 loadPosts();
             };
@@ -748,9 +751,9 @@ ${post.photos ? post.photos.map((p) => `<img src="${p}" class="post-media">`).jo
     <div class="post-header">
 <div class="post-avatar">
 ${renderAvatar(
-    p.posted_by,
-    getName(p.posted_by).substring(0, 2)
-)}
+                        p.posted_by,
+                        getName(p.posted_by).substring(0, 2)
+                    )}
 </div>        <div>
             <div class="post-author">${getName(p.posted_by)}</div>
 <div class="post-time">
@@ -1099,7 +1102,7 @@ ${m.created_by == roll ? `
             const photoInput = document.getElementById("photoInput");
             const mediaPreview = document.getElementById("mediaPreview");
 
-           photoInput.addEventListener("change", async function () {
+            photoInput.addEventListener("change", async function () {
 
                 mediaPreview.innerHTML = "";
                 selectedMedia.photos = [];
@@ -1140,7 +1143,7 @@ ${m.created_by == roll ? `
                     mediaPreview.appendChild(img);
                 }
             });
-            
+
             async function compressImage(file) {
 
                 const img = await createImageBitmap(file);
@@ -1582,20 +1585,20 @@ ${m.message}
                 }
             }, 2000);
 
-               document.getElementById('chatInput').addEventListener('keypress', function (e) {
+            document.getElementById('chatInput').addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     sendMessage();
                 }
             });
-        
-    const sidebar = document.getElementById("sidebar");
+
+            const sidebar = document.getElementById("sidebar");
             const menuToggle = document.getElementById("menuToggle");
 
             menuToggle.addEventListener("click", () => {
                 sidebar.classList.toggle("open");
             });
 
-          window.closeMenu = function () {
+            window.closeMenu = function () {
                 document.getElementById('sidebar').classList.remove('open');
             };
 
@@ -1614,6 +1617,18 @@ ${m.message}
             })();
         })();
 
+    </script>
+    <script>
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        logoutBtn.addEventListener("click", () => {
+            // Clear stored login data
+            localStorage.removeItem("classUserRoll");
+            localStorage.removeItem("classUserName");
+
+            // Redirect to login page
+            window.location.href = "index.html";
+        });
     </script>
 </body>
 
