@@ -105,7 +105,7 @@
                     </div>
 
                     <input type="file" id="avatarUpload" accept="image/*" style="display:none"> <span class="user-name"
-                        id="userDisplayName">YADHAV SREEKANTH</span>
+                        id="userDisplayName"></span>
                 </div>
             </div>
 
@@ -1607,7 +1607,25 @@ ${m.message}
                 checkAuth();
 
                 await loadProfiles();   // 🔥 LOAD AVATARS FIRST
+                // 🔥 SET USER NAME IN TOP BAR
+                const name = localStorage.getItem("classUserName");
 
+                if (name) {
+                    const nameElement = document.getElementById("userDisplayName");
+                    if (nameElement) {
+                        nameElement.textContent = name;
+                    }
+
+                    // Optional: update avatar initials
+                    const initials = name
+                        .split(" ")
+                        .map(word => word[0])
+                        .join("")
+                        .toUpperCase()
+                        .substring(0, 2);
+
+                    document.getElementById("avatarLetters").textContent = initials;
+                }
                 loadAvatar();           // top bar avatar
                 populateGroupGrid();
                 loadPosts();
