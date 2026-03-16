@@ -9,12 +9,12 @@
     <link rel="icon" href="assets/favicon.png">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/memory.css">
+    <link rel="stylesheet" href="styles/messages.css">
     <!-- supabase js -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
     <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
@@ -33,6 +33,9 @@
             <div class="sidebar-header">
                 <i class="fa-regular fa-star"></i>
                 <h2>Class X</h2>
+                <div class="close-menu" onclick="closeMenu()">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
             </div>
             <div class="nav-menu">
 
@@ -75,14 +78,15 @@
         </div>
 
         <!-- mobile menu toggle -->
-        <div class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-        </div>
-
+     
         <!-- main content -->
         <div class="main-content">
             <!-- top bar with user name -->
             <div class="top-bar" id="topBar">
+                   <div class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+
                 <div class="user-profile">
                     <div class="user-avatar" id="userAvatar">
                         <img id="avatarImg" style="display:none;width:100%;height:100%;border-radius:50%">
@@ -202,7 +206,7 @@
                     </div>
 
                     <!-- FILE INPUT -->
-<input type="file" id="memoryFiles" accept="image/*,video/*" multiple hidden>
+                    <input type="file" id="memoryFiles" accept="image/*,video/*" multiple hidden>
 
 
                     <!-- CREATE BUTTON -->
@@ -213,7 +217,10 @@
                 </div>
 
                 <!-- MEMORIES GRID -->
-                <div class="memories-grid" id="memoriesGrid"></div>
+                <div class="memories-grid" id="memoriesGrid">
+
+                </div>
+
 
             </div>
 
@@ -231,15 +238,81 @@
 
                 </div>
             </div>
+            <div class="section" id="messages-section">
+
+                <h1 class="section-title">
+                    <i class="fa-regular fa-envelope"></i> Messages
+                </h1>
+
+                <div class="chat-container">
+
+                    <!-- LEFT PANEL -->
+                    <div class="chat-sidebar">
+
+                        <div class="chat-sidebar-header">
+                            <input type="text" placeholder="Search chats..." id="chatSearch">
+                        </div>
+
+                        <div id="chatList" class="chat-list">
+                            <!-- students will be inserted here -->
+                        </div>
+
+                    </div>
+
+
+                    <!-- RIGHT PANEL -->
+                    <div class="chat-main">
+
+                        <div class="chat-header" style="display:flex;justify-content:space-between;align-items:center;">
+                        <button class="back-btn" onclick="closeChat()">←</button>
+
+                            <span id="chatHeader">Select a chat</span>
+                        
+                            <button onclick="clearChat()" style="
+                        background:#ff4d4d;
+                        border:none;
+                        color:white;
+                        padding:6px 10px;
+                        border-radius:8px;
+                        cursor:pointer;
+                        font-size:12px;
+                        ">
+                                <i class="fa-solid fa-trash"></i> 
+                            </button>
+                        
+                        </div>
+
+                        <div id="chatMessages" class="chat-messages"></div>
+
+                        <div class="chat-input-box">
+
+                            <input id="chatInput" placeholder="Type a message...">
+
+                            <button onclick="sendMessage()">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     </div>
     </div>
 
+
+
+
     <script>
         const currentUserRoll = localStorage.getItem("classUserRoll");
+        let currentChat = null;
+
         (function () {
             // student roster
-            const studentRoster = [
+            window.studentRoster = [
                 { roll: 1, name: "AADIDEV M", nickname: "" },
                 { roll: 2, name: "AAGNA VAIGA U", nickname: "" },
                 { roll: 3, name: "ADHAN BERNARD ANTONY", nickname: "" },
@@ -279,8 +352,54 @@
             // supabase init (use same as login)
             const SUPABASE_URL = 'https://mbijxyxodddknabhefmc.supabase.co';
             const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1iaWp4eXhvZGRka25hYmhlZm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNDI2NzgsImV4cCI6MjA4ODgxODY3OH0.crhnBb5zsAauauaNXriVallPm6yi1S8ZjSmIG56kdfw';
-            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            const supabase = window.supabaseClient;
+            supabase
+                .channel('community-posts')
+                .on(
+                    'postgres_changes',
+                    { event: '*', schema: 'public', table: 'community_posts' },
+                    payload => {
+                        loadPosts();
+                    }
+                )
+                .subscribe();
+            let selectedMedia = {
+                photos: []
+            };
+            supabase
+                .channel('messages-live')
+                .on(
+                    'postgres_changes',
+                    {
+                        event: 'INSERT',
+                        schema: 'public',
+                        table: 'messages'
+                    },
+                    payload => {
 
+                        const msg = payload.new
+                        const myRoll = parseInt(localStorage.getItem("classUserRoll"))
+
+                        if (
+                            (currentChat === msg.sender_roll && msg.receiver_roll === myRoll) ||
+                            (currentChat === msg.receiver_roll && msg.sender_roll === myRoll)
+                        ) {
+                            const container = document.getElementById("chatMessages")
+                            const cls = msg.sender_roll == myRoll ? "sent" : "received"
+
+                            container.innerHTML += `
+<div class="message ${cls}">
+${msg.message}
+</div>
+`
+
+                            container.scrollTop = container.scrollHeight
+                        }
+
+                    }
+                )
+                .subscribe()
             function checkAuth() {
 
                 const roll = localStorage.getItem("classUserRoll");
@@ -396,7 +515,7 @@
             });
 
             function renderPosts(posts) {
-                const container = document.getElementById('communityPosts');
+                const container = document.getElementById('postsFeed');
                 container.innerHTML = '';
 
                 posts.forEach((post) => {
@@ -511,7 +630,11 @@ ${post.photos ? post.photos.map((p) => `<img src="${p}" class="post-media">`).jo
             async function loadPosts() {
                 const roll = parseInt(localStorage.getItem('classUserRoll'));
 
-                const { data: posts } = await supabase.from('community_posts').select('*');
+                const { data: posts } = await supabase
+                    .from('community_posts')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(20);
 
                 const container = document.getElementById('postsFeed');
                 container.innerHTML = '';
@@ -762,7 +885,8 @@ ${m.created_by == roll ? `
                         container.innerHTML = `<video src="${url}" controls autoplay></video>`
                     } else {
                         container.innerHTML = `<img src="${url}">`
-                    }                }
+                    }
+                }
                 show()
                 viewer.querySelector(".left").onclick = () => {
                     index--
@@ -1160,20 +1284,187 @@ Post
                 });
             });
 
-            // mobile menu toggle
-            document.getElementById('menuToggle').addEventListener('click', () => {
-                document.getElementById('sidebar').classList.toggle('open');
+            window.loadChatList = function () {
+                const container = document.getElementById('chatList');
+                container.innerHTML = '';
+
+                studentRoster.forEach((s) => {
+                    if (s.roll == currentUserRoll) return;
+
+                    const initials = s.name
+                        .split(' ')
+                        .map(n => n[0])
+                        .join('')
+                        .substring(0, 2);
+
+                    container.innerHTML += `
+<div class="chat-user" onclick="openChat(${s.roll})">
+<div class="chat-avatar">${initials}</div>
+<div>${s.name}</div>
+</div>`;
+                });
+            }
+
+            window.openChat = async function (roll) {
+                currentChat = roll;
+
+                const student = studentRoster.find((s) => s.roll == roll);
+                document.getElementById('chatHeader').innerText = student.name;
+
+                loadMessages();
+            };
+
+            window.closeChat = function () {
+
+                const container = document.querySelector(".chat-container");
+
+                container.classList.remove("chat-open");
+
+                currentChat = null;
+
+            };
+
+            window.loadMessages = async function () {
+                const container = document.getElementById('chatMessages');
+                const myRoll = parseInt(localStorage.getItem('classUserRoll'));
+
+                const { data, error } = await supabase
+                    .from('messages')
+                    .select('*')
+                    .or(
+                        `and(sender_roll.eq.${myRoll},receiver_roll.eq.${currentChat}),and(sender_roll.eq.${currentChat},receiver_roll.eq.${myRoll})`
+                    )
+                    .order('created_at', { ascending: true });
+
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+
+                container.innerHTML = '';
+
+                if (!data || data.length === 0) return;
+
+                data.forEach((m) => {
+                    const cls = m.sender_roll == myRoll ? 'sent' : 'received';
+
+                    container.innerHTML += `
+<div class="message ${cls}">
+${m.message}
+</div>`;
+                });
+
+                container.scrollTop = container.scrollHeight;
+            };
+            window.sendMessage = async function () {
+                const input = document.getElementById('chatInput');
+                const text = input.value.trim();
+
+                if (!text || !currentChat) return;
+
+                const myRoll = parseInt(localStorage.getItem('classUserRoll'));
+
+                const { error } = await supabase.from('messages').insert({
+                    sender_roll: myRoll,
+                    receiver_roll: currentChat,
+                    message: text
+                });
+
+                if (error) {
+                    console.error(error);
+                    alert(error.message);
+                    return;
+                }
+
+                input.value = '';
+                loadMessages();
+            };
+            setInterval(() => {
+                if (currentChat) {
+                    loadMessages();
+                }
+            }, 2000);
+
+               document.getElementById('chatInput').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
             });
-            setInterval(loadPosts, 30000);
+
+            window.clearChat = async function () {
+
+                if (!currentChat) {
+                    alert("Select a chat first");
+                    return;
+                }
+
+                if (!confirm("Clear this chat?")) return;
+
+                const myRoll = parseInt(localStorage.getItem("classUserRoll"));
+
+                const { error } = await supabase
+                    .from("messages")
+                    .delete()
+                    .or(
+                        `and(sender_roll.eq.${myRoll},receiver_roll.eq.${currentChat}),and(sender_roll.eq.${currentChat},receiver_roll.eq.${myRoll})`
+                    );
+
+                if (error) {
+                    console.error(error);
+                    alert(error.message);
+                    return;
+                }
+
+                document.getElementById("chatMessages").innerHTML = "";
+
+            };
+            window.openChat = async function (roll) {
+
+                currentChat = roll;
+
+                const student = studentRoster.find((s) => s.roll == roll);
+
+                document.getElementById("chatHeader").innerText = student.name;
+
+                document.querySelector(".chat-container").classList.add("chat-open");
+
+                loadMessages();
+
+            };
+            window.openChat = async function (roll) {
+
+                currentChat = roll;
+
+                const student = studentRoster.find((s) => s.roll == roll);
+
+                document.getElementById("chatHeader").innerText = student.name;
+
+                document.querySelector(".chat-container").classList.add("chat-open");
+
+                loadMessages();
+
+            };
+         
+    const sidebar = document.getElementById("sidebar");
+            const menuToggle = document.getElementById("menuToggle");
+
+            menuToggle.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+            });
+
+          window.closeMenu = function () {
+                document.getElementById('sidebar').classList.remove('open');
+            };
+
             // initialize
             checkAuth();
             populateGroupGrid();
             loadPosts();
             loadMemories();
+            loadChatList()
         })();
 
     </script>
-
 </body>
 
 </html>
