@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/memory.css">
     <link rel="stylesheet" href="styles/community.css">
+    <link rel="stylesheet" href="styles/bio.css">
     <link rel="stylesheet" href="styles/messages.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#8b5cf6">
@@ -82,9 +83,6 @@
                     <span>Settings</span>
                 </div>
 
-                <button id="logoutBtn" class="btn-logout">
-                    <i class="fa-solid fa-right-from-bracket"></i> Logout
-                </button>
             </div>
         </div>
 
@@ -112,7 +110,7 @@
             <!-- HOME SECTION - Group photo with nicknames -->
             <div class="section active-section" id="home-section">
                 <h1 class="section-title">
-                    <i class="fa-regular fa-user"></i> Our class · Teacher + 28
+                    <i class="fa-regular fa-user"></i> Our class
                 </h1>
                 <div class="glass-card class-intro">
                     <div class="group-photo-container">
@@ -237,6 +235,89 @@
 
             </div>
 
+            
+<div class="section" id="bio-section">
+                <h1 class="section-title">
+                <i class="fa-regular fa-id-card"></i> Bio Data
+            </h1>
+            <!-- SEARCH BOX -->
+            <div class="bio-search">
+                <input type="text" id="bioSearch" placeholder="Search bio details...">
+            </div>
+            
+            <div class="bio-container">
+            
+                <!-- LEFT PHOTO -->
+                <div class="bio-photo-box">
+                    <img src="assets/fa.png" alt="Yadhav">
+                </div>
+            
+                <!-- RIGHT CONTENT -->
+                <div class="bio-card">
+            
+                    <div class="bio-header">
+                        <h2>Yadhav Sreekanth</h2>
+                    </div>
+            
+                    <div class="bio-details" id="bioDetails">
+                        <p><strong>Name:</strong> Yadhav</p>
+                        <p><strong>Nickname:</strong>SK</p>
+                        <p><strong>Roll No:</strong> 28</p>
+                        <p><strong>Phone Number:</strong></p>
+                        <p><strong>About:</strong> He is a good singer 🎤</p>
+                        <p><strong>Achievements:</strong> Got talents 🏆</p>
+                    </div>
+            
+                    <!-- RATING -->
+                    <div class="bio-rating">
+                        <h3>Rate This Profile</h3>
+                        <div class="stars" id="ratingStars">
+                            <span data-value="1">★</span>
+                            <span data-value="2">★</span>
+                            <span data-value="3">★</span>
+                            <span data-value="4">★</span>
+                            <span data-value="5">★</span>
+                        </div>
+                    </div>
+            
+                    <!-- CBSE MARKS TOGGLE -->
+                    <div class="bio-marks-section">
+                    
+                        <div class="marks-toggle">
+                            <h3>CBSE Class 10 Result</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="marksToggle" onchange="toggleMarks()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    
+                        <div class="marks-content" id="marksContent">
+                            <p><strong>English:</strong> 95</p>
+                            <p><strong>Maths:</strong> 98</p>
+                            <p><strong>Science:</strong> 97</p>
+                            <p><strong>Social Science:</strong> 96</p>
+                            <p><strong>Overall Percentage:</strong> 96.5%</p>
+                        </div>
+                    
+                    </div>
+
+                    <!-- COMMENTS -->
+                    <div class="bio-comments">
+                        <h3>Leave Your Opinion</h3>
+            
+                        <div class="comment-box">
+                            <input type="text" id="bioCommentInput" placeholder="Write your comment...">
+                            <button onclick="addBioComment()">Post</button>
+                        </div>
+            
+                        <div id="bioCommentsList"></div>
+                    </div>
+            
+                </div>
+            </div>
+            </div>
+
+
             <!-- TIMELINE SECTION -->
             <div class="section" id="timeline-section">
                 <h1 class="section-title">
@@ -281,8 +362,8 @@
 
                             <span id="chatHeader">Select a chat</span>
 
-                            <button onclick="clearChat()" style="
-                        background:#ff4d4d;
+<button type="button" onclick="clearChat()" style="
+                            background:#ff4d4d;
                         border:none;
                         color:white;
                         padding:6px 10px;
@@ -439,16 +520,19 @@ ${msg.message}
 
                 return initials;
             }
-            window.clearChat = async function () {
+         window.clearChat = async function () {
 
                 if (!currentChat) {
                     alert("Select a chat first");
                     return;
                 }
 
-                if (!confirm("Clear this chat?")) return;
+                if (!confirm("Delete this chat permanently?")) return;
 
                 const myRoll = parseInt(localStorage.getItem("classUserRoll"));
+
+                // Delete messages where:
+                // (I sent AND other received) OR (other sent AND I received)
 
                 const { error } = await supabase
                     .from("messages")
@@ -458,16 +542,16 @@ ${msg.message}
                     );
 
                 if (error) {
-                    console.error(error);
-                    alert(error.message);
+                    console.error("Delete error:", error);
+                    alert("Delete failed: " + error.message);
                     return;
                 }
 
+                // Clear UI
                 document.getElementById("chatMessages").innerHTML = "";
 
+                alert("Chat cleared successfully ✅");
             };
-
-
 
             // populate group grid
             function populateGroupGrid() {
@@ -724,6 +808,56 @@ ${post.photos ? post.photos.map((p) => `<img src="${p}" class="post-media">`).jo
 
                 return 'Unknown';
             }
+
+
+            // BIO RATING
+            const stars = document.querySelectorAll("#ratingStars span");
+
+            stars.forEach(star => {
+                star.addEventListener("click", () => {
+                    const value = star.dataset.value;
+
+                    stars.forEach(s => s.classList.remove("active"));
+
+                    for (let i = 0; i < value; i++) {
+                        stars[i].classList.add("active");
+                    }
+
+                    alert("Thanks for rating ⭐");
+                });
+            });
+
+            function addBioComment() {
+
+                const input = document.getElementById("bioCommentInput");
+                const text = input.value.trim();
+
+                if (!text) return;
+
+                const list = document.getElementById("bioCommentsList");
+
+                const div = document.createElement("div");
+                div.className = "bio-comment";
+                div.innerText = text;
+
+                list.appendChild(div);
+
+                input.value = "";
+            }
+
+            document.getElementById("bioSearch").addEventListener("input", function () {
+
+                const value = this.value.toLowerCase();
+                const details = document.getElementById("bioDetails");
+
+                if (details.innerText.toLowerCase().includes(value)) {
+                    details.style.display = "block";
+                } else {
+                    details.style.display = "none";
+                }
+
+            });
+
             async function loadPosts() {
                 const roll = parseInt(localStorage.getItem('classUserRoll'));
 
@@ -1267,6 +1401,8 @@ Cover
 
             }
 
+        
+
             window.likePost = async function (postId) {
 
                 const roll = parseInt(localStorage.getItem("classUserRoll"))
@@ -1494,7 +1630,7 @@ Post
                         .map(n => n[0])
                         .join('')
                         .substring(0, 2);
-
+                  
                     container.innerHTML += `
 <div class="chat-user" onclick="openChat(${s.roll})">
     <div class="chat-avatar">
@@ -1504,7 +1640,30 @@ Post
 </div>`;
                 });
             };
+            // 🔎 LIVE SEARCH FOR CHAT LIST
+      const chatSearchInput = document.getElementById("chatSearch");
 
+            if (chatSearchInput) {
+                chatSearchInput.addEventListener("input", function () {
+                    const query = this.value.toLowerCase().trim();
+                    filterChatList(query);
+                });
+            }
+
+           function filterChatList(query) {
+                const chatUsers = document.querySelectorAll(".chat-user");
+
+                chatUsers.forEach(user => {
+
+                    const nameElement = user.querySelector(".chat-name");
+                    const name = nameElement
+                        ? nameElement.innerText.toLowerCase()
+                        : user.innerText.toLowerCase();
+
+                    user.style.display = name.includes(query) ? "flex" : "none";
+                });
+            }
+            
             window.openChat = async function (roll) {
                 currentChat = roll;
 
@@ -1637,16 +1796,16 @@ ${m.message}
 
     </script>
     <script>
-        const logoutBtn = document.getElementById("logoutBtn");
+        function toggleMarks() {
+            const marks = document.getElementById("marksContent");
+            const toggle = document.getElementById("marksToggle");
 
-        logoutBtn.addEventListener("click", () => {
-            // Clear stored login data
-            localStorage.removeItem("classUserRoll");
-            localStorage.removeItem("classUserName");
-
-            // Redirect to login page
-            window.location.href = "index.html";
-        });
+            if (toggle.checked) {
+                marks.style.display = "block";
+            } else {
+                marks.style.display = "none";
+            }
+        }
     </script>
 </body>
 
