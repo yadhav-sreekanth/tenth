@@ -15,16 +15,19 @@
     <meta name="theme-color" content="#8b5cf6">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- supabase js -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- google font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
-    <!-- font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script>
+    function checkAuth() {
+            const roll = localStorage.getItem("classUserRoll");
 
-    <style>
+            if (!roll) {
+                window.location.replace("index.html");
+            }
+        }
+</script>
 
-    </style>
 </head>
 
 <body>
@@ -420,24 +423,7 @@ ${msg.message}
                     profileCache[p.roll] = p.avatar_url;
                 });
             }
-            function checkAuth() {
 
-                const roll = localStorage.getItem("classUserRoll");
-                const name = localStorage.getItem("classUserName");
-
-                if (!roll) {
-                    window.location.href = "index.html";
-                    return;
-                }
-
-                // show user info
-                document.getElementById("userDisplayName").textContent = name;
-
-                const initials = name.split(" ").map(n => n[0]).join("").substring(0, 2);
-                avatarImg.style.display = "none";
-                avatarLetters.style.display = "block";
-                avatarLetters.textContent = initials;
-                        }
             function renderAvatar(roll, initials) {
 
                 const url = profileCache[roll];
@@ -980,7 +966,6 @@ ${m.created_by == roll ? `
 
                 document.body.appendChild(viewer)
 
-                const img = viewer.querySelector(".viewer-img")
 
                 function show() {
 
@@ -1013,29 +998,31 @@ ${m.created_by == roll ? `
                 }
                 /* swipe support */
 
-                let startX = 0
+                let startX = 0;
 
-                img.addEventListener("touchstart", e => {
-                    startX = e.touches[0].clientX
-                })
+                const mediaContainer = viewer.querySelector(".viewer-media");
 
-                img.addEventListener("touchend", e => {
+                mediaContainer.addEventListener("touchstart", e => {
+                    startX = e.touches[0].clientX;
+                });
 
-                    let diff = e.changedTouches[0].clientX - startX
+                mediaContainer.addEventListener("touchend", e => {
+
+                    let diff = e.changedTouches[0].clientX - startX;
 
                     if (diff > 50) {
-                        index--
-                        if (index < 0) index = data.length - 1
-                        show()
+                        index--;
+                        if (index < 0) index = data.length - 1;
+                        show();
                     }
 
                     if (diff < -50) {
-                        index++
-                        if (index >= data.length) index = 0
-                        show()
+                        index++;
+                        if (index >= data.length) index = 0;
+                        show();
                     }
 
-                })
+                });
 
             }
 
