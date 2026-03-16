@@ -9,7 +9,12 @@
     <link rel="icon" href="assets/favicon.png">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/memory.css">
+    <link rel="stylesheet" href="styles/community.css">
     <link rel="stylesheet" href="styles/messages.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#8b5cf6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- supabase js -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- google font -->
@@ -152,7 +157,9 @@
                     <textarea class="form-input community-text" placeholder="Share something with class..." rows="3"
                         style="border-radius:24px;width:100%;"></textarea>
                     <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
-                        <button class="download-btn"><i class="fa-regular fa-image"></i> Attach</button>
+                    <button class="download-btn" onclick="document.getElementById('photoInput').click()">
+                        <i class="fa-regular fa-image"></i> Attach
+                    </button>
                         <input type="file" id="photoInput" accept="image/*" style="display:none" multiple>
                         <button class="download-btn" style="background:#1f1a2b;color:white;" onclick="createPost()">
 
@@ -400,6 +407,19 @@ ${msg.message}
                     }
                 )
                 .subscribe()
+                let profileCache = {};
+
+            async function loadProfiles() {
+                const { data } = await supabase
+                    .from("profiles")
+                    .select("roll, avatar_url");
+
+                if (!data) return;
+
+                data.forEach(p => {
+                    profileCache[p.roll] = p.avatar_url;
+                });
+            }
             function checkAuth() {
 
                 const roll = localStorage.getItem("classUserRoll");
@@ -414,9 +434,52 @@ ${msg.message}
                 document.getElementById("userDisplayName").textContent = name;
 
                 const initials = name.split(" ").map(n => n[0]).join("").substring(0, 2);
-                document.getElementById("userAvatar").textContent = initials;
-            }
+                avatarImg.style.display = "none";
+                avatarLetters.style.display = "block";
+                avatarLetters.textContent = initials;
+                        }
+            function renderAvatar(roll, initials) {
 
+                const url = profileCache[roll];
+
+                if (url) {
+                    return `<img src="${url}"
+            style="width:100%;height:100%;
+            object-fit:cover;border-radius:50%;">`;
+                }
+
+                return initials;
+            }
+            window.clearChat = async function () {
+
+                if (!currentChat) {
+                    alert("Select a chat first");
+                    return;
+                }
+
+                if (!confirm("Clear this chat?")) return;
+
+                const myRoll = parseInt(localStorage.getItem("classUserRoll"));
+
+                const { error } = await supabase
+                    .from("messages")
+                    .delete()
+                    .or(
+                        `and(sender_roll.eq.${myRoll},receiver_roll.eq.${currentChat}),and(sender_roll.eq.${currentChat},receiver_roll.eq.${myRoll})`
+                    );
+
+                if (error) {
+                    console.error(error);
+                    alert(error.message);
+                    return;
+                }
+
+                document.getElementById("chatMessages").innerHTML = "";
+
+            };
+
+
+    
             // populate group grid
             function populateGroupGrid() {
                 const grid = document.getElementById('groupGrid');
@@ -432,6 +495,19 @@ ${msg.message}
                             <div class="nickname-tag"><i class="fa-regular fa-pen-to-square"></i> Set nickname</div>
                         </div>
                     `;
+
+                    async function getAvatarUrl(roll) {
+
+                    const { data } = await supabase
+                        .from("profiles")
+                        .select("avatar_url")
+                        .eq("roll", roll)
+                        .maybeSingle();
+
+                    return data?.avatar_url || null;
+                }
+
+                
                 function formatName(name) {
                     return name.toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
                 }
@@ -440,8 +516,9 @@ ${msg.message}
                     const initials = s.name.split(' ').map(n => n[0]).join('');
                     grid.innerHTML += `
                             <div class="student-card" data-roll="${s.roll}">
-                                <div class="student-avatar">${initials.substring(0, 2)}</div>
-                                <div class="student-name">${s.name}</div>
+<div class="student-avatar">
+${renderAvatar(s.roll, initials.substring(0, 2))}
+</div>                                <div class="student-name">${s.name}</div>
                                 <div class="student-roll">Roll - ${s.roll}</div>
                                 <div class="nickname-tag" onclick="setNickname(${s.roll})">
                                     <i class="fa-regular fa-pen-to-square"></i> 
@@ -474,10 +551,34 @@ ${msg.message}
                 const form = document.getElementById('createMemoryForm');
                 form.style.display = form.style.display === 'none' ? 'block' : 'none';
             });
-            const avatar = document.getElementById("userAvatar");
+          const avatar = document.getElementById("userAvatar");
             const upload = document.getElementById("avatarUpload");
             const avatarImg = document.getElementById("avatarImg");
             const avatarLetters = document.getElementById("avatarLetters");
+
+            function setAvatarImage(url) {
+                if (!url) return;
+
+                avatarImg.src = url;
+                avatarImg.style.display = "block";
+                avatarImg.style.objectFit = "cover";
+                avatarLetters.style.display = "none";
+            }
+
+            async function loadAvatar() {
+
+                if (!currentUserRoll) return;
+
+                const { data, error } = await supabase
+                    .from("profiles")
+                    .select("avatar_url")
+                    .eq("roll", currentUserRoll)
+                    .maybeSingle();   // 🔥 IMPORTANT FIX
+
+                if (data?.avatar_url) {
+                    setAvatarImage(data.avatar_url);
+                }
+            }
 
             avatar.addEventListener("click", () => upload.click());
 
@@ -485,31 +586,36 @@ ${msg.message}
                 const file = upload.files[0];
                 if (!file) return;
 
-                const filePath = "avatars/" + Date.now() + "-" + file.name;
+                const filePath = "avatars/" + currentUserRoll + "-" + Date.now();
 
-                const { error: uploadError } =
-                    await supabase.storage
-                        .from("classfiles")
-                        .upload(filePath, file)
+                const { error } = await supabase
+                    .storage
+                    .from("classfiles")
+                    .upload(filePath, file, { upsert: true });
 
-                if (uploadError) {
-                    console.error(uploadError)
-                    alert(uploadError.message)
-                    return
+                if (error) {
+                    alert(error.message);
+                    return;
                 }
 
-                const { data: urlData } =
-                    supabase.storage.from("classfiles").getPublicUrl(filePath);
-                console.log("Public URL:", urlData.publicUrl); // check it works in console
+                const { data } = supabase
+                    .storage
+                    .from("classfiles")
+                    .getPublicUrl(filePath);
 
-                // ensure container has proper size
-                avatarImg.src = urlData.publicUrl;
-                avatarImg.style.display = "block";
-                avatarImg.style.width = "100%";
-                avatarImg.style.height = "100%";
-                avatarImg.style.objectFit = "cover";
-                avatarLetters.style.display = "none";
+                const avatarUrl = data.publicUrl;
+
+                // 🔥 SAVE TO DATABASE
+                await supabase.from("profiles").upsert({
+                    roll: currentUserRoll,
+                    avatar_url: avatarUrl
+                });
+
+                // Update UI immediately
+                setAvatarImage(avatarUrl);
             });
+
+
             document.querySelector(".download-btn:nth-child(1)").addEventListener("click", () => {
                 document.getElementById("photoInput").click();
             });
@@ -615,9 +721,11 @@ ${post.photos ? post.photos.map((p) => `<img src="${p}" class="post-media">`).jo
 
                 // reset form
                 document.querySelector('.community-text').value = '';
-                selectedMedia = { photos: [] };
+               selectedMedia = { photos: [] };
+                document.getElementById("mediaPreview").innerHTML = "";
                 loadPosts();
             };
+
             function getName(roll) {
                 const student = studentRoster.find((s) => s.roll == roll);
 
@@ -652,8 +760,12 @@ ${post.photos ? post.photos.map((p) => `<img src="${p}" class="post-media">`).jo
                     container.innerHTML += `
 <div class="post-card">
     <div class="post-header">
-        <div class="post-avatar">${p.posted_by}</div>
-        <div>
+<div class="post-avatar">
+${renderAvatar(
+    p.posted_by,
+    getName(p.posted_by).substring(0, 2)
+)}
+</div>        <div>
             <div class="post-author">${getName(p.posted_by)}</div>
 <div class="post-time">
 ${new Date(p.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -948,6 +1060,51 @@ ${m.created_by == roll ? `
 
             }
 
+            const photoInput = document.getElementById("photoInput");
+            const mediaPreview = document.getElementById("mediaPreview");
+
+           photoInput.addEventListener("change", async function () {
+
+                mediaPreview.innerHTML = "";
+                selectedMedia.photos = [];
+
+                const files = Array.from(photoInput.files);
+
+                for (let file of files) {
+
+                    // 🔥 Upload to Supabase
+                    const filePath = "posts/" + Date.now() + "-" + file.name;
+
+                    const { error } = await supabase
+                        .storage
+                        .from("classfiles")
+                        .upload(filePath, file);
+
+                    if (error) {
+                        console.error(error);
+                        continue;
+                    }
+
+                    // Get public URL
+                    const { data } =
+                        supabase.storage
+                            .from("classfiles")
+                            .getPublicUrl(filePath);
+
+                    selectedMedia.photos.push(data.publicUrl);
+
+                    // Show preview
+                    const img = document.createElement("img");
+                    img.src = data.publicUrl;
+                    img.style.width = "120px";
+                    img.style.height = "120px";
+                    img.style.objectFit = "cover";
+                    img.style.borderRadius = "16px";
+
+                    mediaPreview.appendChild(img);
+                }
+            });
+            
             async function compressImage(file) {
 
                 const img = await createImageBitmap(file);
@@ -1285,10 +1442,12 @@ Post
             });
 
             window.loadChatList = function () {
+
                 const container = document.getElementById('chatList');
                 container.innerHTML = '';
 
                 studentRoster.forEach((s) => {
+
                     if (s.roll == currentUserRoll) return;
 
                     const initials = s.name
@@ -1299,11 +1458,13 @@ Post
 
                     container.innerHTML += `
 <div class="chat-user" onclick="openChat(${s.roll})">
-<div class="chat-avatar">${initials}</div>
-<div>${s.name}</div>
+    <div class="chat-avatar">
+        ${renderAvatar(s.roll, initials)}
+    </div>
+    <div>${s.name}</div>
 </div>`;
                 });
-            }
+            };
 
             window.openChat = async function (roll) {
                 currentChat = roll;
@@ -1390,61 +1551,7 @@ ${m.message}
                     sendMessage();
                 }
             });
-
-            window.clearChat = async function () {
-
-                if (!currentChat) {
-                    alert("Select a chat first");
-                    return;
-                }
-
-                if (!confirm("Clear this chat?")) return;
-
-                const myRoll = parseInt(localStorage.getItem("classUserRoll"));
-
-                const { error } = await supabase
-                    .from("messages")
-                    .delete()
-                    .or(
-                        `and(sender_roll.eq.${myRoll},receiver_roll.eq.${currentChat}),and(sender_roll.eq.${currentChat},receiver_roll.eq.${myRoll})`
-                    );
-
-                if (error) {
-                    console.error(error);
-                    alert(error.message);
-                    return;
-                }
-
-                document.getElementById("chatMessages").innerHTML = "";
-
-            };
-            window.openChat = async function (roll) {
-
-                currentChat = roll;
-
-                const student = studentRoster.find((s) => s.roll == roll);
-
-                document.getElementById("chatHeader").innerText = student.name;
-
-                document.querySelector(".chat-container").classList.add("chat-open");
-
-                loadMessages();
-
-            };
-            window.openChat = async function (roll) {
-
-                currentChat = roll;
-
-                const student = studentRoster.find((s) => s.roll == roll);
-
-                document.getElementById("chatHeader").innerText = student.name;
-
-                document.querySelector(".chat-container").classList.add("chat-open");
-
-                loadMessages();
-
-            };
-         
+        
     const sidebar = document.getElementById("sidebar");
             const menuToggle = document.getElementById("menuToggle");
 
@@ -1456,12 +1563,19 @@ ${m.message}
                 document.getElementById('sidebar').classList.remove('open');
             };
 
-            // initialize
-            checkAuth();
-            populateGroupGrid();
-            loadPosts();
-            loadMemories();
-            loadChatList()
+            (async function initApp() {
+
+                checkAuth();
+
+                await loadProfiles();   // 🔥 LOAD AVATARS FIRST
+
+                loadAvatar();           // top bar avatar
+                populateGroupGrid();
+                loadPosts();
+                loadMemories();
+                loadChatList();
+
+            })();
         })();
 
     </script>
