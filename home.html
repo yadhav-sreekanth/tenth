@@ -209,7 +209,7 @@
             gap:12px;
             margin-top:15px;
             "></div>
-
+<div id="uploadCounter" style="margin-top:8px;font-weight:600;"></div>
                     <!-- DRAG DROP AREA -->
                     <div class="upload-area" id="dropZone" style="margin-top:15px;">
                         Drag & Drop images or videos here
@@ -794,6 +794,53 @@ ${new Date(p.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-di
                 loadPosts();
             };
 
+            async function uploadWithProgress(file, folder, progressBar, counter, total, index) {
+
+                return new Promise((resolve, reject) => {
+
+                    const xhr = new XMLHttpRequest();
+
+                    const filePath = `${folder}/${Date.now()}-${file.name}`;
+
+                    xhr.open(
+                        "POST",
+                        SUPABASE_URL + "/storage/v1/object/classfiles/" + filePath
+                    );
+
+                    xhr.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
+                    xhr.setRequestHeader("x-upsert", "true");
+
+                    xhr.upload.onprogress = function (event) {
+                        if (event.lengthComputable) {
+
+                            const percent =
+                                ((event.loaded / event.total) * (1 / total) * 100)
+                                + (index / total) * 100;
+
+                            progressBar.style.width = percent + "%";
+
+                            counter.innerText =
+                                `Uploading ${index + 1} / ${total} (${Math.round(percent)}%)`;
+                        }
+                    };
+
+                    xhr.onload = function () {
+                        if (xhr.status === 200 || xhr.status === 201) {
+                            resolve(filePath);
+                        } else {
+                            reject(xhr.responseText);
+                        }
+                    };
+
+                    xhr.onerror = reject;
+
+                    const formData = new FormData();
+                    formData.append("file", file);
+
+                    xhr.send(formData);
+                });
+            }
+
             window.createMemory = async function () {
 
                 const title =
@@ -816,24 +863,26 @@ ${new Date(p.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-di
                 }
 
                 let urls = []
+                for (let i = 0; i < files.length; i++) {
 
-                for (let file of files) {
+                    const file = files[i];
 
-                    const Filepath = "memories/" + Date.now() + "-" + file.name
-
-                    await supabase.storage
-                        .from("classfiles")
-                        .upload(Filepath, file)
+                    const filePath = await uploadWithProgress(
+                        file,
+                        "memories",
+                        progressBar,
+                        counter,
+                        files.length,
+                        i
+                    );
 
                     const { data } =
                         supabase.storage
                             .from("classfiles")
-                            .getPublicUrl(Filepath)
+                            .getPublicUrl(filePath);
 
-                    urls.push(data.publicUrl)
-
+                    urls.push(data.publicUrl);
                 }
-
                 const cover = urls[coverIndex] || urls[0]
                 const excludeArray =
                     exclude ? exclude.split(",").map(n => parseInt(n)) : null
