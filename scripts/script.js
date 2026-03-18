@@ -44,8 +44,8 @@ let currentChat = null;
   const SUPABASE_URL = 'https://mbijxyxodddknabhefmc.supabase.co';
   const SUPABASE_ANON_KEY =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1iaWp4eXhvZGRka25hYmhlZm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNDI2NzgsImV4cCI6MjA4ODgxODY3OH0.crhnBb5zsAauauaNXriVallPm6yi1S8ZjSmIG56kdfw';
-  window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const supabase = window.supabaseClient;
+  window.db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   supabase
     .channel('community-posts')
     .on(
@@ -59,9 +59,9 @@ let currentChat = null;
       }
     )
     .subscribe();
-  let selectedMedia = {
-    photos: []
-  };
+window.selectedMedia = {
+  photos: []
+};
   supabase
     .channel('messages-live')
     .on(
@@ -93,7 +93,6 @@ ${msg.message}
       }
     )
     .subscribe();
-  let profileCache = {};
 
   async function loadProfiles() {
     const { data } = await supabase.from('profiles').select('roll, avatar_url');
@@ -105,17 +104,7 @@ ${msg.message}
     });
   }
 
-  function renderAvatar(roll, initials) {
-    const url = profileCache[roll];
 
-    if (url) {
-      return `<img src="${url}"
-            style="width:100%;height:100%;
-            object-fit:cover;border-radius:50%;">`;
-    }
-
-    return initials;
-  }
   window.clearChat = async function () {
     if (!currentChat) {
       alert('Select a chat first');
@@ -223,15 +212,31 @@ ${renderAvatar(s.roll, initials.substring(0, 2))}
   const avatarImg = document.getElementById('avatarImg');
   const avatarLetters = document.getElementById('avatarLetters');
 
-  function setAvatarImage(url) {
-    if (!url) return;
+function setAvatar(url, initials, roll) {
+  const img = document.getElementById('avatarImg');
+  const letters = document.getElementById('avatarLetters');
 
-    avatarImg.src = url;
-    avatarImg.style.display = 'block';
-    avatarImg.style.objectFit = 'cover';
-    avatarLetters.style.display = 'none';
+  if (url) {
+    img.src = url;
+
+    img.onload = () => {
+      img.style.setProperty('display', 'block', 'important');
+      letters.style.setProperty('display', 'none', 'important');
+    };
+
+    img.onerror = () => {
+      img.style.setProperty('display', 'none', 'important');
+      letters.style.setProperty('display', 'flex', 'important');
+      letters.style.setProperty('background', getColor(roll), 'important');
+      letters.innerText = initials;
+    };
+  } else {
+    img.style.setProperty('display', 'none', 'important');
+    letters.style.setProperty('display', 'flex', 'important');
+    letters.style.setProperty('background', getColor(roll), 'important');
+    letters.innerText = initials;
   }
-
+}
   async function loadAvatar() {
     if (!currentUserRoll) return;
 
@@ -242,7 +247,15 @@ ${renderAvatar(s.roll, initials.substring(0, 2))}
       .maybeSingle(); // 🔥 IMPORTANT FIX
 
     if (data?.avatar_url) {
-      setAvatarImage(data.avatar_url);
+      const name = localStorage.getItem('classUserName') || '';
+      const initials = name
+        .split(' ')
+        .map((w) => w[0])
+        .join('')
+        .substring(0, 2)
+        .toUpperCase();
+
+      setAvatar(data.avatar_url, initials, currentUserRoll);
     }
   }
 
@@ -280,16 +293,13 @@ ${renderAvatar(s.roll, initials.substring(0, 2))}
   document.querySelector('.download-btn:nth-child(1)').addEventListener('click', () => {
     document.getElementById('photoInput').click();
   });
+window.getName = function (roll) {
+  const student = studentRoster.find((s) => s.roll == roll);
 
-  function getName(roll) {
-    const student = studentRoster.find((s) => s.roll == roll);
+  if (student) return student.name;
 
-    if (student) {
-      return student.name;
-    }
-
-    return 'Unknown';
-  }
+  return 'Unknown';
+};
 
   // BIO RATING
   const stars = document.querySelectorAll('#ratingStars span');

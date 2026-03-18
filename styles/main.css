@@ -13,6 +13,80 @@
                 overflow-x: hidden;
             }
 
+            /* group photo grid */
+            .group-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 1rem;
+            }
+
+            .student-card {
+                background: rgba(255, 255, 255, 0.6);
+                border-radius: 24px;
+                padding: 1rem;
+                text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.8);
+                transition: all 0.3s;
+                position: relative;
+            }
+
+            .student-card:hover {
+                transform: translateY(-5px);
+                background: white;
+                box-shadow: 0 15px 30px -10px rgba(115, 65, 165, 0.2);
+            }
+
+            .student-avatar {
+                width: 70px;
+                height: 70px;
+                background: linear-gradient(145deg, #d9b0ee, #b384c9);
+                border-radius: 60px;
+                margin: 0 auto 0.8rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: 700;
+                font-size: 1.5rem;
+                border: 3px solid white;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+            }
+            
+
+            .teacher-badge {
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: #ffd700;
+                color: #1f1a2b;
+                padding: 4px 12px;
+                border-radius: 40px;
+                font-size: 0.7rem;
+                font-weight: 700;
+                border: 2px solid white;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .student-name {
+                font-weight: 600;
+                color: #2b1b36;
+                margin-bottom: 0.3rem;
+            }
+
+            .student-roll {
+                font-size: 0.75rem;
+                color: #6f5b7a;
+            }
+
+            .nickname-tag {
+                font-size: 0.8rem;
+                background: rgba(210, 180, 240, 0.3);
+                padding: 4px 8px;
+                border-radius: 40px;
+                margin-top: 6px;
+                color: #4b3b5c;
+            }
+
             /* floating blobs (same as login) */
             .blob {
                 position: fixed;
@@ -265,4 +339,86 @@
             .section.active-section {
                 display: block;
             }
-           
+           /* Default (desktop) */
+.group-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+/* Tablets */
+@media (max-width: 1024px) {
+    .group-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+}
+
+/* Mobile large */
+@media (max-width: 768px) {
+    .group-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .student-avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 1.2rem;
+    }
+}
+
+/* Mobile small */
+@media (max-width: 480px) {
+    .group-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+
+    .student-card {
+        padding: 0.8rem;
+    }
+
+    .student-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+
+    .student-name {
+        font-size: 0.9rem;
+    }
+
+    .nickname-tag {
+        font-size: 0.7rem;
+    }
+}
+/* SCROLLABLE GROUP PHOTO */
+.group-photo-container {
+    width: 100%;
+    overflow-x: auto;   /* 🔥 horizontal scroll */
+    overflow-y: hidden;
+    border-radius: 20px;
+}
+
+/* optional smooth scroll */
+.group-photo-container::-webkit-scrollbar {
+    height: 6px;
+}
+.group-photo-container::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+
+.group-photo {
+    height: auto;
+    width: 1600px;   /* 🔥 keep original width */
+    max-width: none; /* prevent shrinking */
+    display: block;
+}
+@media (max-width: 768px) {
+    .group-photo-container {
+        cursor: grab;
+    }
+}
+.group-photo-container {
+    scroll-behavior: smooth;
+}

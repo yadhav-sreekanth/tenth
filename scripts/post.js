@@ -1,3 +1,30 @@
+let profileCache = {};
+
+function renderAvatar(roll, initials) {
+  const avatarUrl = profileCache[roll];
+
+  if (avatarUrl) {
+    return `<img src="${avatarUrl}" class="avatar-img">`;
+  }
+
+  return `<div class="avatar-fallback">${initials}</div>`;
+}
+function getColor(roll) {
+  const colors = ['#ff6b6b', '#6bcB77', '#4d96ff', '#ffd93d', '#845ec2'];
+  return colors[roll % colors.length];
+}
+
+function renderAvatar(roll, initials) {
+  const avatarUrl = profileCache[roll];
+
+  if (avatarUrl) {
+    return `<img src="${avatarUrl}" class="avatar-img">`;
+  }
+
+  return `<div class="avatar-fallback" style="background:${getColor(roll)}">
+            ${initials}
+          </div>`;
+}
 function renderPosts(posts) {
   const container = document.getElementById('postsFeed');
   container.innerHTML = '';
@@ -73,7 +100,7 @@ window.createPost = async function () {
   const text = document.querySelector('.community-text').value;
   const roll = parseInt(localStorage.getItem('classUserRoll'));
 
-  const { data, error } = await supabase.from('community_posts').insert({
+  const { data, error } = await window.db.from('community_posts').insert({
     content: text,
     posted_by: roll,
     photos: selectedMedia.photos
@@ -238,7 +265,7 @@ window.addEventListener('scroll', () => {
 window.deletePost = async function (postId) {
   if (!confirm('Delete this post?')) return;
 
-  const { error } = await supabase.from('community_posts').delete().eq('id', postId);
+  const { error } = await window.db.from('community_posts').delete().eq('id', postId);
 
   if (error) {
     console.error(error);
@@ -256,7 +283,7 @@ window.likePost = async function (postId) {
 
   const { data } = await supabase
     .from('post_reactions')
-    .select('id, topic, description, cover_image, created_by, created_at, visibility_exclude')
+    .select('*')
     .eq('post_id', postId)
     .eq('user_roll', roll);
 
@@ -265,7 +292,7 @@ window.likePost = async function (postId) {
     return;
   }
 
-  await supabase.from('post_reactions').insert({
+  await window.db.from('post_reactions').insert({
     post_id: postId,
     user_roll: roll,
     reaction_type: 'like'
@@ -311,7 +338,7 @@ window.addComment = async function (postId) {
   const text = document.getElementById('commentInput-' + postId).value;
   const roll = parseInt(localStorage.getItem('classUserRoll'));
 
-  await supabase.from('post_comments').insert({
+  await window.db.from('post_comments').insert({
     post_id: postId,
     user_roll: roll,
     comment: text
@@ -320,10 +347,7 @@ window.addComment = async function (postId) {
   loadComments(postId);
 };
 async function loadComments(postId) {
-  const { data } = await supabase
-    .from('post_comments')
-    .select('id, topic, description, cover_image, created_by, created_at, visibility_exclude')
-    .eq('post_id', postId);
+  const { data } = await supabase.from('post_comments').select('*').eq('post_id', postId);
 
   const container = document.getElementById('commentList-' + postId);
 
@@ -334,7 +358,7 @@ async function loadComments(postId) {
 
     const { data: liked } = await supabase
       .from('post_reactions')
-      .select('id, topic, description, cover_image, created_by, created_at, visibility_exclude')
+      .select('*')
       .eq('comment_id', c.id)
       .eq('user_roll', roll);
 
@@ -370,7 +394,7 @@ window.likeComment = async function (commentId) {
 
   const { data } = await supabase
     .from('post_reactions')
-    .select('id, topic, description, cover_image, created_by, created_at, visibility_exclude')
+    .select('*')
     .eq('comment_id', commentId)
     .eq('user_roll', roll);
 
@@ -379,7 +403,7 @@ window.likeComment = async function (commentId) {
     return;
   }
 
-  await supabase.from('post_reactions').insert({
+  await window.db.from('post_reactions').insert({
     comment_id: commentId,
     user_roll: roll,
     reaction_type: 'like'
@@ -400,7 +424,7 @@ async function updateCommentLike(commentId) {
 window.deleteComment = async function (commentId, postId) {
   if (!confirm('Delete this comment?')) return;
 
-  await supabase.from('post_comments').delete().eq('id', commentId);
+  await window.db.from('post_comments').delete().eq('id', commentId);
 
   loadComments(postId);
 };
