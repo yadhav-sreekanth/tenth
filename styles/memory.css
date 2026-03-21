@@ -3,20 +3,206 @@
 .memories-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 25px;
-  margin-top: 20px;
+  align-items: start; /* 🔥 prevents stretch issues */
 }
 
+
 .memory-card {
-  position: relative;
+  display: inline-block;
+  width: 250px;          /* IMPORTANT */
+  height: 250px;         /* REMOVE FIXED HEIGHT */
+  margin-bottom: 20px;
   border-radius: 18px;
   overflow: hidden;
   cursor: pointer;
-    width: 100%;
-  height: 390px;
   background: white;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   transition: 0.25s;
+}
+
+.upload-progress {
+  display: none;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+  animation: fadeIn 0.3s ease;
+}
+
+/* progress bar container */
+.progress-bar-wrapper {
+  width: 100%;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* actual progress */
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  border-radius: 30px;
+
+  background: linear-gradient(135deg, #b384c9, #9f6eb7);
+  box-shadow: 0 0 10px rgba(180, 120, 210, 0.5);
+
+  transition: width 0.25s ease-in-out;
+  position: relative;
+}
+
+/* animated shine effect */
+.progress-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255,255,255,0.4);
+  transform: skewX(-20deg);
+  animation: shine 1.2s infinite;
+}
+
+/* text */
+.progress-text {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #5c4b66;
+  display: flex;
+  justify-content: space-between;
+}
+.gallery-content { 
+    display: grid !important; 
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important; 
+    gap: 12px !important; 
+    max-width: 90vw !important; 
+} 
+
+/* ===== PREVIEW MODE ===== */
+
+.preview-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+
+  background: radial-gradient(circle at top, #1a1022, #0f0715);
+}
+
+/* MEDIA BOX */
+.preview-media-box {
+  max-width: 90vw;
+  max-height: 75vh;
+  border-radius: 20px;
+  overflow: hidden;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+}
+
+/* IMAGE / VIDEO */
+.preview-media-box img,
+.preview-media-box video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 20px;
+}
+
+/* CONTROLS */
+.preview-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  background: rgba(255,255,255,0.08);
+  padding: 10px 20px;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+
+  color: white;
+  font-weight: 600;
+}
+
+/* BUTTONS */
+.preview-controls button {
+  background: linear-gradient(145deg, #b384c9, #9f6eb7);
+  border: none;
+  color: white;
+  font-size: 18px;
+  padding: 8px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.preview-controls button:hover {
+  transform: scale(1.1);
+}
+.preview-wrapper {
+  animation: fadeIn 0.4s ease;
+}
+
+/* BACK BUTTON */
+.preview-back {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: 0.2s;
+}
+
+.preview-back:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.gallery-thumb { 
+    width: 100% !important; 
+    height: 120px !important; 
+    border-radius: 12px !important; 
+    overflow: hidden !important; 
+    cursor: pointer !important; 
+} 
+
+.gallery-thumb img, 
+.gallery-thumb video { 
+    width: 100% !important; 
+    height: 100% !important; 
+    object-fit: cover !important; 
+}
+
+
+/* animations */
+@keyframes shine {
+  0% { left: -50%; }
+  100% { left: 120%; }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .memory-card:hover {
@@ -24,13 +210,13 @@
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15);
 }
 
-.memory-card img {
+.memory-card img,
+.memory-card video {
   width: 100%;
-  height: 390px;
-  object-fit: cover;
+  height: auto;
   display: block;
+  object-fit: contain;
 }
-
 /* overlay */
 
 .memory-overlay {
@@ -231,16 +417,20 @@ textarea.form-input {
 }
 
 .gallery-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 50px;
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
   color: white;
-  cursor: pointer;
-  padding: 20px;
-  transition: 0.2s;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  font-size: 22px;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: 0.25s;
+}
+
+.gallery-btn:hover {
+  background: rgba(255,255,255,0.25);
+  transform: scale(1.1);
 }
 
 .gallery-btn:hover {
@@ -262,7 +452,7 @@ textarea.form-input {
 .gallery-counter {
   position: absolute;
   bottom: 25px;
-  color: white;
+  color: rgb(3, 3, 3);
   font-size: 14px;
 }
 .media-count {
@@ -333,62 +523,144 @@ textarea.form-input {
 }
 
 /* ===== MEMORY VIEWER ===== */
+/* ===== MODERN GALLERY VIEWER ===== */
 
 .memory-viewer {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.92);
+  inset: 0;
+  background: rgba(10, 5, 15, 0.96);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
 }
 
-.viewer-img {
-  max-width: 90%;
-  max-height: 85%;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+/* container */
+.viewer-container {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* media */
+.viewer-media img,
+.viewer-media video {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 16px;
+  object-fit: contain;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+/* top bar */
+.viewer-top {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  right: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+}
+
+/* counter */
+.viewer-counter {
+  background: rgba(255,255,255,0.1);
+  padding: 6px 12px;
+  color: #0f0715;
+  border-radius: 20px;
+}
+
+/* close button */
+.viewer-close {
+  font-size: 26px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.1);
+  padding: 6px 12px;
+  border-radius: 50%;
 }
 
 .viewer-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 40px;
-  background: none;
+
+  width: 60px;
+  height: 60px;
+
+  border-radius: 50%;
   border: none;
-  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 26px;
+  color: rgb(0, 0, 0);
+
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+
   cursor: pointer;
-  padding: 20px;
+  transition: 0.25s;
 }
 
+/* LEFT & RIGHT POSITION */
 .viewer-btn.left {
-  left: 20px;
+  left: 25px;
 }
 
 .viewer-btn.right {
-  right: 20px;
-}
-
-.viewer-close {
-  position: absolute;
-  top: 20px;
   right: 25px;
-  font-size: 30px;
-  color: white;
-  cursor: pointer;
-}
-.viewer-media img,
-.viewer-media video {
-  max-width: 90vw;
-  max-height: 80vh;
-  border-radius: 12px;
 }
 
+/* HOVER EFFECT */
+.viewer-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.viewer-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.viewer-btn.left { left: 20px; }
+.viewer-btn.right { right: 20px; }
+
+/* bottom thumbnails */
+.viewer-thumbs {
+  position: absolute;
+  bottom: 15px;
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px;
+}
+
+.viewer-thumbs img,
+.viewer-thumbs video {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+  opacity: 0.6;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.viewer-thumbs .active {
+  opacity: 1;
+  border: 2px solid #b384c9;
+}f
 .preview-item video {
   width: 120px;
   height: 120px;

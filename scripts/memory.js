@@ -5,10 +5,10 @@ window.createMemory = async function () {
 
   if (!title) return alert('Enter memory title');
   if (files.length === 0) return alert('Add files first');
-
-const progressContainer = document.getElementById('uploadProgressContainer');
-const progressBar = document.getElementById('uploadProgressBar');
-const progressText = document.getElementById('uploadProgressText');
+  
+  const progressContainer = document.getElementById('uploadProgressContainer');
+  const progressBar = document.getElementById('uploadProgressBar');
+  const progressText = document.getElementById('uploadProgressText');
 
   progressContainer.style.display = 'block';
   progressBar.style.width = '0%';
@@ -117,24 +117,51 @@ async function loadMemories() {
 
     const mediaCount = media?.length || 0;
 
-    grid.innerHTML += `
-      <div class="memory-card">
+grid.innerHTML += `
+<div class="memory-card" onclick="openMemory(${m.id})">
+    <!-- DELETE BUTTON -->
+<div class="memory-delete" onclick="event.stopPropagation(); deleteMemory(${m.id})">🗑️</div>
+${
+  m.cover_image.includes('.mp4')
+    ? `<video 
+  src="${m.cover_image}" 
+  muted 
+  preload="metadata"
+  style="pointer-events:none;">
+</video>`
+    : `<img src="${m.cover_image}" onclick="openMemory(${m.id})">`
+}
+    <div class="media-count">${mediaCount}
+    </div>
 
-        <img src="${m.cover_image}" onclick="openMemory(${m.id})">
+    <div class="memory-overlay">
+      <h3>${m.topic}</h3>
+      <p>${m.description || ''}</p>
+    </div>
 
-        <div class="media-count">
-          📷 ${mediaCount}
-        </div>
-
-        <div class="memory-overlay">
-          <h3>${m.topic}</h3>
-          <p>${m.description || ''}</p>
-        </div>
-
-      </div>
-    `;
+  </div>
+`;
   }
 }
+function closeMemoryViewer() {
+  const viewerSection = document.getElementById('memoryViewerSection');
+  const viewerGrid = document.getElementById('memoryViewerGrid');
+
+  // 🛑 STOP all videos
+  viewerGrid.querySelectorAll('video').forEach((v) => {
+    v.pause();
+    v.currentTime = 0;
+  });
+
+  // 🧹 CLEAR viewer content (VERY IMPORTANT)
+  viewerGrid.innerHTML = '';
+
+  // 👁️ Toggle UI
+  viewerSection.style.display = 'none';
+  document.getElementById('memoriesGrid').style.display = 'block';
+  document.getElementById('showCreateMemory').style.display = 'block';
+}
+
 window.deleteMemory = async function (id) {
   if (!confirm('Delete this memory?')) return;
 
@@ -146,7 +173,6 @@ window.deleteMemory = async function (id) {
 };
 let galleryMedia = [];
 let galleryIndex = 0;
-
 window.openMemory = async function (id) {
   const { data: media } = await supabase
     .from('memory_media')
@@ -157,11 +183,17 @@ window.openMemory = async function (id) {
   if (!media || media.length === 0) return;
 
   galleryMedia = media;
+
+  // hide main UI
+  document.getElementById('memoriesGrid').style.display = 'none';
+  document.getElementById('showCreateMemory').style.display = 'none';
+
+  // show viewer
+  document.getElementById('memoryViewerSection').style.display = 'block';
+
+  // 👉 DIRECTLY OPEN PREVIEW
   galleryIndex = 0;
-
-  document.getElementById('galleryModal').classList.remove('hidden');
-
-  showGalleryItem(); // show first item
+  showPreviewMode();
 };
 function openGallery() {
   document.getElementById('galleryModal').classList.remove('hidden');
@@ -170,6 +202,57 @@ function openGallery() {
 
 function closeGallery() {
   document.getElementById('galleryModal').classList.add('hidden');
+}function showPreviewMode() {
+  const viewer = document.getElementById('memoryViewerGrid');
+  const item = galleryMedia[galleryIndex];
+
+  viewer.innerHTML = `
+    <div class="viewer-container">
+
+      <!-- TOP BAR -->
+      <div class="viewer-top">
+        <div class="viewer-counter">
+          ${galleryIndex + 1} / ${galleryMedia.length}
+        </div>
+        <div class="viewer-close" onclick="closeMemoryViewer()">✕</div>
+      </div>
+
+      <!-- MEDIA -->
+      <div class="viewer-media">
+        ${
+          item.media_url.includes('.mp4')
+            ? `<video src="${item.media_url}" controls autoplay></video>`
+            : `<img src="${item.media_url}">`
+        }
+      </div>
+
+      <!-- NAV BUTTONS -->
+      <button class="viewer-btn left" onclick="prevMedia()">‹</button>
+      <button class="viewer-btn right" onclick="nextMedia()">›</button>
+
+      <!-- THUMBNAILS -->
+      <div class="viewer-thumbs">
+        ${galleryMedia
+          .map(
+            (m, i) => `
+          ${
+            m.media_url.includes('.mp4')
+              ? `<video src="${m.media_url}" onclick="galleryIndex=${i};showPreviewMode()" class="${i === galleryIndex ? 'active' : ''}"></video>`
+              : `<img src="${m.media_url}" onclick="galleryIndex=${i};showPreviewMode()" class="${i === galleryIndex ? 'active' : ''}">`
+          }
+        `
+          )
+          .join('')}
+      </div>
+
+    </div>
+  `;
+}
+function openMemoryAgain() {
+  const currentMemoryId = galleryMedia[0]?.memory_id;
+
+  // show grid view of that memory
+  openMemory(currentMemoryId);
 }
 
 function showGalleryItem() {
@@ -177,7 +260,6 @@ function showGalleryItem() {
   const counter = document.getElementById('galleryCounter');
 
   const item = galleryMedia[galleryIndex];
-
   if (!item) return;
 
   content.innerHTML = '';
@@ -194,6 +276,8 @@ function showGalleryItem() {
     element.src = item.media_url;
   }
 
+  element.classList.add('viewer-media');
+
   content.appendChild(element);
 
   counter.innerText = `${galleryIndex + 1} / ${galleryMedia.length}`;
@@ -201,14 +285,14 @@ function showGalleryItem() {
 function nextMedia() {
   if (galleryIndex < galleryMedia.length - 1) {
     galleryIndex++;
-    showGalleryItem();
+    showPreviewMode(); // ✅ FIXED
   }
 }
 
 function prevMedia() {
   if (galleryIndex > 0) {
     galleryIndex--;
-    showGalleryItem();
+    showPreviewMode(); // ✅ FIXED
   }
 }
 

@@ -157,7 +157,7 @@ const POSTS_LIMIT = 20;
 let isLoadingPosts = false;
 let hasMorePosts = true;
 
-async function loadPosts(loadMore = false) {
+  async function loadPosts(loadMore = false) {
   if (isLoadingPosts || !hasMorePosts) return;
 
   isLoadingPosts = true;
@@ -189,7 +189,13 @@ async function loadPosts(loadMore = false) {
     container.innerHTML = '';
     hasMorePosts = true;
   }
+const { data: userLikes } = await supabase
+  .from('post_reactions')
+  .select('post_id')
+  .eq('user_roll', roll);
 
+    const likedPostIds = new Set(userLikes.map((l) => l.post_id));
+    
   let html = '';
 
   for (let p of posts) {
@@ -413,6 +419,16 @@ window.likeComment = async function (commentId) {
 
   updateCommentLike(commentId);
 };
+async function checkIfLiked(postId, roll) {
+  const { data } = await supabase
+    .from('post_reactions')
+    .select('id')
+    .eq('post_id', postId)
+    .eq('user_roll', roll);
+
+  return data.length > 0;
+}
+
 async function updateCommentLike(commentId) {
   const { count } = await supabase
     .from('post_reactions')

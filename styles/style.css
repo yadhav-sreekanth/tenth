@@ -9,6 +9,10 @@
              height: 100%;
              overflow: hidden;
         }
+        .fa {
+            font-family: "Font Awesome 5 Free" !important; /* Or FontAwesome for v4 */
+        }
+        
 
         body {
             min-height: 100vh;
